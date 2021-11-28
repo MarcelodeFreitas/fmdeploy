@@ -1,0 +1,18 @@
+.main-button {
+    margin-left: auto;
+    color: #fff;
+    background-color: #0385B0;
+    border-radius: 10px;
+    padding: 0.7em 2em ;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.main-button:hover {
+    background-color: #51ADCE;
+}
+
+.btn-icon {
+    margin-left: 1em;
+}

@@ -1,0 +1,16 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.title {
+    text-align: left;
+    padding-top: 0.2em;
+    color: #0385B0;
+}
+
+.line {
+    border: 1px solid #fff;
+    width: 100%;
+}

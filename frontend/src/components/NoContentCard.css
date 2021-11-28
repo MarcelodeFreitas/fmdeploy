@@ -1,0 +1,25 @@
+.no-content-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.no-content-card {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.no-content-card {
+    display: flex;
+    width: 100%;
+    height: auto;
+    max-width: 600px;
+    padding: 50px;
+}
+
+.no-content-text {
+    color: #707070;
+    font-weight: regular;
+    margin-top: 20px;
+}

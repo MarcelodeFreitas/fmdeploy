@@ -1,0 +1,8 @@
+.home-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0385B0;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}

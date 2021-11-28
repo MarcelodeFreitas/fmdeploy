@@ -1,0 +1,275 @@
+.content {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    background-color: #F3F3F3;
+}
+
+.content-left {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding-right: 20px;
+}
+
+.content-right {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding-right: 20px;
+}
+
+.content-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #D3D3D3;
+    font-weight: normal;
+    font-size: 20px;
+    height: 150px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border-style: dashed;
+}
+
+.content-box-text-small {
+    font-size: 16px;
+}
+
+/* .dropzone-text {
+    font-size:25px;
+} */
+
+.content-line {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.content-input {
+    display: flex;
+    width: 90%;
+    border: 3px solid #0385B0;
+    border-radius: 10px;
+    height: 40px;
+    padding-left: 10px;
+}
+
+.content-input-fat {
+    display: flex;
+    width: 90%;
+    border: 3px solid #0385B0;
+    border-radius: 10px;
+    height: 200px;
+    resize: none;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.content-input:focus {
+    border: 3px solid #51ADCE;
+    outline: none;
+}
+
+.content-input-fat:focus {
+    border: 3px solid #51ADCE;
+    outline: none;
+}
+
+/* form slider */
+
+.content-slider {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.toggle-slider {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transform: scale(0.5);
+}
+
+/* input[type=checkbox] {
+    position: relative;
+    background-color: #B5B5B5;
+    width: 80px;
+    height: 40px;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    border-radius: 20px;
+    transition: 0.5s;
+}
+
+input:checked[type=checkbox] {
+    position: relative;
+    background-color: #0385B0;
+    width: 80px;
+    height: 40px;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    border-radius: 20px;
+}
+
+input[type=checkbox]:before {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    background: #fff;
+    content: "";
+    width: 36px;
+    height: 36px;
+    border-radius: 20px;
+    transform: scale(0.9);
+    transition: 0.5s;
+}
+
+input:checked[type=checkbox]:before {
+    left: 42px;
+} */
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    font-size: 15px;
+}
+
+.center-button {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+    justify-content: center;
+    font-size: 15px;
+}
+
+.buttons-form {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    font-size: 15px;
+}
+
+.clear-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #141418;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 250px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.clear-button:hover {
+    background-color: #323234;
+    cursor: pointer;
+}
+
+.new-header {
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: regular;
+    color: #0385B0;
+}
+
+/* Small screens */
+
+@media only screen and (max-width: 600px) {
+    .content {
+        flex-direction: column;
+    }
+    .content-left {
+        width: 100%;
+        margin-bottom: 60px;
+    }
+    .content-right {
+        width: 100%;
+    }
+}
+
+.file-list-item {
+    margin-left: 10px;
+    list-style: inside;
+}
+
+.file-list-errors {
+    margin-left: 10px;
+}
+
+.file-messages {
+    margin-left: 6px;
+    margin-bottom: 10px;
+}
+
+.blank-line {
+    height: 20px;
+}
+
+.new-label {
+    font-weight: bold;
+    margin-left: 6px;
+    margin-bottom: 6px;
+}
+
+.python-script-accepted {
+    color: black;
+    list-style: none;
+}
+
+.center {
+    text-align: center;
+}
+
+.material-ui-card {
+    width: 100%;
+}
+
+.formik-field {
+    
+}
+
+.fileName{
+    color: black;
+}
+
+.error-message {
+    font-size: 12px;
+    margin-top: 6px;
+    color: red;
+}
+
+.submit-result-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.submit-result-element {
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.submit-result-message {
+    margin-left: 20px;
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+.submit-result-label {
+    color: #0385B0;
+    font-weight: bold;
+}
