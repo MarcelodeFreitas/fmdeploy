@@ -7,9 +7,9 @@ services:
       context: backend
       dockerfile: Dockerfile.prod
     ports:
-      - "80:80"
+      - "8000:8000"
     expose:  
-      - 80
+      - 8000
     volumes:
       - ./backend:/app/:cached
       - ./.docker/.ipython:/root/.ipython:cached
