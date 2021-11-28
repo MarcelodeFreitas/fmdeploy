@@ -30,7 +30,7 @@ export default class UserSettings extends Component {
       responseData: "",
       name: "",
       email: "",
-      open: true,
+      open: false,
     }
   }
 

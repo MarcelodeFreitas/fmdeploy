@@ -24,6 +24,7 @@ app = FastAPI()
 origins = [
     "http://localhost",
     "http://localhost:3000",
+    "localhost",
 ]
 
 app.add_middleware(
@@ -78,8 +79,8 @@ async def insert_initial_values(db: Session = Depends(get_db)):
 async def file_cleanup():
     try: 
         print("Cleaning old files...")
-        path1 = ".\inputfiles"
-        path2 = ".\outputfiles"
+        path1 = "./inputfiles"
+        path2 = "./outputfiles"
         max_access_time = 60 * 24 * 60
         present_time=time.time()
         if os.path.exists(path1):
@@ -90,9 +91,9 @@ async def file_cleanup():
                     last_access_time=fil_stat.st_atime
                     if last_access_time < present_time-max_access_time:
                         print("here")
-                        fil_split = fil.split("\\")
+                        fil_split = fil.split("/")
                         print(fil_split)
-                        dir_path = fil_split[0] + "\\" + fil_split[1] + "\\" + fil_split[2]
+                        dir_path = fil_split[0] + "/" + fil_split[1] + "/" + fil_split[2]
                         print(dir_path)
                         print("FILE PATH: ", fil, "/ LAST ACCESS TIME: ", time.ctime(last_access_time), "/ DELETE TIME: ", time.ctime(present_time))
                         print("DELETING DIRECTORY: ", dir_path)
@@ -105,8 +106,8 @@ async def file_cleanup():
                     last_access_time=fil_stat.st_atime
                     """ print(fil, time.ctime(last_access_time)) """
                     if last_access_time < present_time-max_access_time:
-                        fil_split = fil.split("\\")
-                        dir_path = fil_split[0] + "\\" + fil_split[1] + "\\" + fil_split[2]
+                        fil_split = fil.split("/")
+                        dir_path = fil_split[0] + "/" + fil_split[1] + "/" + fil_split[2]
                         print(dir_path)
                         print("FILE PATH: ", fil, "/ LAST ACCESS TIME: ", time.ctime(last_access_time), "/ DELETE TIME: ", time.ctime(present_time))
                         print("DELETING DIRECTORY: ", dir_path)
