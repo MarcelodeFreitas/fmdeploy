@@ -5,32 +5,30 @@ services:
   backend:
     build:
       context: backend
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
+      dockerfile: Dockerfile.prod
     expose:  
-      - 80
+      - 8000
     volumes:
       - ./backend:/app/:cached
       - ./.docker/.ipython:/root/.ipython:cached
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.fmdeploybackendrouter.rule=Host(`fmdeploy-api.localhost`)
+      - traefik.http.services.backend.loadbalancer.server.port=8000
 
   frontend:
     build:
       context: frontend
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
+      dockerfile: Dockerfile.prod
     expose:  
       - 3000
     volumes:
       - './frontend:/app:cached'
       - './frontend/node_modules:/app/node_modules:cached'
-    environment:
-      - NODE_ENV=development
     labels:
       - traefik.enable=true
-      - traefik.http.routers.fmdeploy.rule=Host(`fmdeploy.localhost`)
-      - traefik.http.services.shop.loadbalancer.server.port=8080
+      - traefik.http.routers.fmdeployfrontendrouter.rule=Host(`fmdeploy.localhost`)
+      - traefik.http.services.frontend.loadbalancer.server.port=3000
 
   reverse-proxy:
     image: traefik:v2.2
