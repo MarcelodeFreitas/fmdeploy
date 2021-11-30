@@ -10,4 +10,8 @@ COPY ./app /fmdeploy/app
 
 EXPOSE 8000
 
+RUN apt-get update -y && apt-get install -y --no-install-recommends build-essential gcc \libsndfile1 
+
+RUN apt-get install libsndfile1
+
 CMD ["gunicorn", "-k", "uvicorn.workers.UvicornH11Worker", "app.main:app", "-b 0.0.0.0:8000"]

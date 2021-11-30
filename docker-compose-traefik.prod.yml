@@ -1,0 +1,59 @@
+# docker-compose.prod.yml
+
+version: '3.8'
+
+services:
+
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile.prod
+    expose:  
+      - 8000
+    volumes:
+      - ./backend:/app/:cached
+      - ./.docker/.ipython:/root/.ipython:cached
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=Host(`fmdeploy-api.localhost`)
+      - traefik.http.services.backend.loadbalancer.server.port=8000
+      - "traefik.http.routers.backend.tls=true"
+      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile.prod
+    expose:  
+      - 3000
+    volumes:
+      - './frontend:/app:cached'
+      - './frontend/node_modules:/app/node_modules:cached'
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`fmdeploy.localhost`)
+      - traefik.http.services.frontend.loadbalancer.server.port=3000
+      - traefik.http.routers.frontend.tls=true
+      - traefik.http.routers.frontend.tls.certresolver=letsencrypt
+  
+  traefik:
+    build:
+      context: .
+      dockerfile: Dockerfile.traefik
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik-public-certificates:/certificates"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`dashboard-fastapi-traefik.localhost`) && (PathPrefix(`/`)"
+      - "traefik.http.routers.dashboard.tls=true"
+      - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=testuser:$$apr1$$jIKW.bdS$$eKXe4Lxjgy/rH65wP1iQe1"
+
+volumes:
+  traefik-public-certificates:

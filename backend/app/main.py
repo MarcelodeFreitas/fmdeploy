@@ -25,6 +25,7 @@ origins = [
     "http://localhost",
     "http://localhost:3000",
     "localhost",
+    "http://fmdeploy.localhost",
 ]
 
 app.add_middleware(

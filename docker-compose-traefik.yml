@@ -3,6 +3,7 @@ version: '3.8'
 services:
 
   backend:
+    user: root
     build:
       context: backend
       dockerfile: Dockerfile.prod
@@ -11,6 +12,10 @@ services:
     volumes:
       - ./backend:/app/:cached
       - ./.docker/.ipython:/root/.ipython:cached
+      - "./database:/database.db"
+      - "./inputfiles:/inputfiles"
+      - "./modelfiles:/modelfiles"
+      - "./outputfiles:/outputfiles"
     labels:
       - traefik.enable=true
       - traefik.http.routers.fmdeploybackendrouter.rule=Host(`fmdeploy-api.localhost`)
@@ -30,11 +35,11 @@ services:
       - traefik.http.routers.fmdeployfrontendrouter.rule=Host(`fmdeploy.localhost`)
       - traefik.http.services.frontend.loadbalancer.server.port=3000
 
-  reverse-proxy:
+  traefik:
     image: traefik:v2.2
     ports:
       - 80:80
       - 8081:8080
     volumes:
-      - "./traefik/traefik.dev.toml:/etc/traefik/traefik.toml"
+      - "./traefik.dev.toml:/etc/traefik/traefik.toml"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
