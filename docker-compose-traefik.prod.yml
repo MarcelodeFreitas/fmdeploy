@@ -13,6 +13,10 @@ services:
     volumes:
       - ./backend:/app/:cached
       - ./.docker/.ipython:/root/.ipython:cached
+      - "./database:/database.db"
+      - "./inputfiles:/inputfiles"
+      - "./modelfiles:/modelfiles"
+      - "./outputfiles:/outputfiles"
     labels:
       - traefik.enable=true
       - traefik.http.routers.backend.rule=Host(`fmdeploy-api.localhost`)
