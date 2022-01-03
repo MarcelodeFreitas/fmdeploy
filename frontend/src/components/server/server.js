@@ -1,3 +1,3 @@
-const baseUrl = "http://fmdeploy-api.localhost"
+const baseUrl = "https://fmdeploy-api.localhost"
 
 export default baseUrl

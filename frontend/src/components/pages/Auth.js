@@ -61,7 +61,7 @@ const register = async (name, email, password, confirmPassword) => {
   }
   try {
     await axios.post(
-      `${baseUrl}/user/`, {
+      `${baseUrl}/user`, {
       name: name,
       email: email,
       password: password,
