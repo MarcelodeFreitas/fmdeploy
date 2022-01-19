@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import { useState, useContext } from "react"
 import { useHistory } from "react-router-dom"
 import "../../App.css"
 import "./Auth.css"
@@ -9,6 +9,7 @@ import StoreContext from "../Store/Context"
 import Navbar from "../Navbar"
 import Cards from '../Cards'
 import CustomizedSnackbar from "../Alert"
+import AuthModal from "./AuthModal"
 
 const initialState = () => {
   return { name: "", email: "", password: "", confirmPassword: "", error: "" }
@@ -30,13 +31,9 @@ const login = async (email, password) => {
           username: email,
           password: password,
         }),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }
       )
       token = response.data.access_token
+      console.log("login success")
       return { token: token, errorMessage: errorMessage }
     } catch (e) {
       console.log("login error: ", e)
@@ -79,7 +76,7 @@ const register = async (name, email, password, confirmPassword) => {
     }
     return { errorMessage: e.response.data.detail }
   }
-};
+}
 
 export default function Auth() {
 
@@ -175,7 +172,6 @@ export default function Auth() {
               src={window.location.origin + "/logo192.png"}
               alt="FMdeploy.jpg"
             />
-            {/* <h1>FMdeploy</h1> */}
           </div>
           <div className={"slider"}>
             <div className={"slider-labels"}>
@@ -185,10 +181,10 @@ export default function Auth() {
               {signin && <p className={"slider-text"} onClick={() => { setSignin(false); setError(""); }}>Register</p>}
               {!signin && <p className={"slider-text"} style={{ color: "#0385B0" }}>Register</p>}
             </div>
-            {signin && <hr style={{ color: "#0385B0" }} />}
-            {!signin && <hr style={{ color: "#fff" }} />}
-            {signin && <hr style={{ color: "#fff" }} />}
-            {!signin && <hr style={{ color: "#0385B0" }} />}
+            {signin && <hr style={{ borderColor: "#0385B0" }} />}
+            {!signin && <hr style={{ borderColor: "#fff" }} />}
+            {signin && <hr style={{ borderColor: "#fff" }} />}
+            {!signin && <hr style={{ borderColor: "#0385B0" }} />}
           </div>
           <div className={"inner-form"}>
             {/* {error && (
@@ -262,6 +258,7 @@ export default function Auth() {
           </div>
         </form>
       </div>
+      <AuthModal />
       <Cards />
     </>
   )

@@ -6,13 +6,6 @@ from .database import engine
 from .routers import user, ai, userai, authentication, files
 from fastapi.middleware.cors import CORSMiddleware
 
-from sqlalchemy import event, DDL
-from .models import User
-from .database import get_db
-from . import hashing
-from sqlalchemy.orm import Session
-from sqlalchemy.event import listen
-
 from fastapi_utils.tasks import repeat_every
 import os
 import time
@@ -22,14 +15,11 @@ app = FastAPI()
 
 #CORS
 origins = [
-    "http://localhost",
-    "http://localhost:3000",
     "localhost",
-    "http://fmdeploy.localhost",
-    "https://fmdeploy.localhost",
-    "fmdeploy.localhost",
-    "https://fmdeploy.mivbox.di.uminho.pt",
     "http://localhost:36555",
+    "https://localhost:36555",
+    "http://localhost:36554",
+    "https://localhost:36554",
 ]
 
 app.add_middleware(
@@ -65,27 +55,14 @@ app.include_router(ai.router)
 app.include_router(files.router)
 app.include_router(userai.router)
 
-#attemt to insert an admin after table user is created
-#unsuccessfull
-event.listen(User.__table__, 'after_create',
-            DDL(""" INSERT INTO user (name, admin, password, is_admin) VALUES ('admin', 'admin@gmail.com', 'jHCX9BxnNJQXS2J', TRUE) """))
-
-""" @event.listens_for(User.__table__, 'after_create')
-async def insert_initial_values(db: Session = Depends(get_db)):
-    new_user = User(name="admin", email="admin@gmail.com", password=hashing.Hash.bcrypt("jHCX9BxnNJQXS2J"), is_admin=True)
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    print("doooooone") """
-
 #delete files that haven't been accessed in 24h, checked every 24h since server start
 @app.on_event("startup")
 @repeat_every(seconds = 60 * 24 * 60) #repeat every hour
 async def file_cleanup():
     try: 
         print("Cleaning old files...")
-        path1 = "./inputfiles"
-        path2 = "./outputfiles"
+        path1 = ".\inputfiles"
+        path2 = ".\outputfiles"
         max_access_time = 60 * 24 * 60
         present_time=time.time()
         if os.path.exists(path1):
@@ -96,9 +73,9 @@ async def file_cleanup():
                     last_access_time=fil_stat.st_atime
                     if last_access_time < present_time-max_access_time:
                         print("here")
-                        fil_split = fil.split("/")
+                        fil_split = fil.split("\\")
                         print(fil_split)
-                        dir_path = fil_split[0] + "/" + fil_split[1] + "/" + fil_split[2]
+                        dir_path = fil_split[0] + "\\" + fil_split[1] + "\\" + fil_split[2]
                         print(dir_path)
                         print("FILE PATH: ", fil, "/ LAST ACCESS TIME: ", time.ctime(last_access_time), "/ DELETE TIME: ", time.ctime(present_time))
                         print("DELETING DIRECTORY: ", dir_path)
@@ -111,8 +88,8 @@ async def file_cleanup():
                     last_access_time=fil_stat.st_atime
                     """ print(fil, time.ctime(last_access_time)) """
                     if last_access_time < present_time-max_access_time:
-                        fil_split = fil.split("/")
-                        dir_path = fil_split[0] + "/" + fil_split[1] + "/" + fil_split[2]
+                        fil_split = fil.split("\\")
+                        dir_path = fil_split[0] + "\\" + fil_split[1] + "\\" + fil_split[2]
                         print(dir_path)
                         print("FILE PATH: ", fil, "/ LAST ACCESS TIME: ", time.ctime(last_access_time), "/ DELETE TIME: ", time.ctime(present_time))
                         print("DELETING DIRECTORY: ", dir_path)
@@ -120,7 +97,7 @@ async def file_cleanup():
     except:
         print("error")
 
-@app.get("/")
+@app.get("/api")
 async def main():
     content = """
         <head>

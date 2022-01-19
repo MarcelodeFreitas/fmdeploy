@@ -108,6 +108,13 @@
     margin-top: 20px;
 }
 
+.run-button {
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    margin-top: 20px;
+}
+
 .link-text {
     display: none;
     margin-left: 1rem;

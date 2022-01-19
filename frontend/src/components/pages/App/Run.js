@@ -78,17 +78,17 @@ const Run = (props) => {
 
       setOutputFileType(await filename.split(".")[1].slice(0, -1))
 
-      const url = window.URL.createObjectURL(
-        new Blob([await response.data], {
-          type: await response.headers['content-type']
-        })
-      )
+      const blob = new Blob([await response.data], {
+        type: await response.headers['content-type']
+      })
+
+      const url = window.URL.createObjectURL(blob)
 
       setOutputFile(url)
 
-      const link = document.createElement('a')
+      const link = document.createElement("a")
       link.href = url
-      link.setAttribute('download', filename)
+      link.download = filename.replaceAll('"', '')
       document.body.appendChild(link)
       setDownloadLink(link)
 
@@ -271,10 +271,7 @@ const Run = (props) => {
                 </div>
               </div>
               {outputFileName &&
-                <div className="run-buttons">
-                  <div className="clear-button-fat" onClick={() => { }}>
-                    SHARE
-                  </div>
+                <div className="run-button">
                   <div className="submit-button" onClick={() => downloadLink.click()}>
                     DOWNLOAD
                   </div>

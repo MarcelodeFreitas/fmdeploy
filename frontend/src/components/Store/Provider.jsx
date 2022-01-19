@@ -1,4 +1,3 @@
-import React from 'react';
 import Context from './Context';
 import useStorage from '../utils/useStorage';
 

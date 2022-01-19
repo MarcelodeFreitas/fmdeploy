@@ -378,13 +378,14 @@ export default class New extends Component {
                     initialValues={defaultState}
                     state={() => this.state}
                     onSubmit={async (values) => {
+                      console.log(values)
                       const aiCreatedMessage = await this.createAiModel(this.context.token, await values)
                       const pythonScriptMessage = await this.uploadPythonScript(this.context.token, await values, this.state.aiId)
-                      if (pythonScriptMessage === "Python Script uploaded successfully") {
+                      if (pythonScriptMessage === "Python Script uploaded successfully" && values.modelFiles.length > 0) {
                         const modelFilesMessage = await this.uploadModelFiles(this.context.token, await values, this.state.aiId)
                         this.setState({ aiCreatedMessage: aiCreatedMessage, pythonScriptMessage: pythonScriptMessage, modelFilesMessage: modelFilesMessage })
                       } else {
-                        this.setState({ aiCreatedMessage: aiCreatedMessage, pythonScriptMessage: pythonScriptMessage, modelFilesMessage: "Error in previous step" })
+                        this.setState({ aiCreatedMessage: aiCreatedMessage, pythonScriptMessage: pythonScriptMessage, modelFilesMessage: "No model files were submitted" })
                       }
                       return this.state
                       }
@@ -430,6 +431,7 @@ export default class New extends Component {
                           >
                             <MenuItem value={".nii.gz"}>.nii.gz</MenuItem>
                             <MenuItem value={".wav"}>.wav</MenuItem>
+                            <MenuItem value={".mp3"}>.mp3</MenuItem>
                           </Field>
                           <ErrorMessage component="div" className="error-message" name="inputType" />
                         </Box>
@@ -445,6 +447,7 @@ export default class New extends Component {
                             <MenuItem value={".nii.gz"}>.nii.gz</MenuItem>
                             <MenuItem value={".csv"}>.csv</MenuItem>
                             <MenuItem value={".png"}>.png</MenuItem>
+                            <MenuItem value={".wav"}>.wav</MenuItem>
                           </Field>
                           <ErrorMessage component="div" className="error-message" name="outputType" />
                         </Box>
@@ -464,7 +467,7 @@ export default class New extends Component {
                       label="Add Model Files"
                       validationSchema={yup.object().shape({
                         pythonScript: yup.mixed().required("Python Script is a required field"),
-                        modelFiles: yup.array().min(1),
+                        modelFiles: yup.array().min(0),
                       })
                       }>
                       <Box paddingBottom={2}>

@@ -1,0 +1,41 @@
+version: '2'
+
+services:
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    expose:  
+      - "3000"
+    volumes:
+      - .:/app:cached
+      - ./node_modules:/app/node_modules:cached
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`localhost`)
+      - traefik.http.services.frontend.loadbalancer.server.port=3000
+      - traefik.http.routers.frontend.tls=true
+      - traefik.http.routers.frontend.tls.certresolver=letsencrypt
+  
+  traefik-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.traefik
+    ports:
+      - "8001:80"
+      - "4431:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik-public-certificates:/certificates
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dashboard.rule=Host(`dashboard-frontend.localhost`)
+      - traefik.http.routers.dashboard.tls=true
+      - traefik.http.routers.dashboard.tls.certresolver=letsencrypt
+      - traefik.http.routers.dashboard.service=api@internal
+      - traefik.http.routers.dashboard.middlewares=auth
+      - traefik.http.middlewares.auth.basicauth.users=testuser:$$apr1$$jIKW.bdS$$eKXe4Lxjgy/rH65wP1iQe1
+
+volumes:
+  traefik-public-certificates:

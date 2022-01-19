@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime
 from .database import Base
 from sqlalchemy.orm import relationship
+from sqlalchemy import event, DDL
 
 #Database table and relationship creation
 #SQLAlchemy calls the shemas by the name model
@@ -13,6 +14,9 @@ class User(Base):
     email = Column(String, unique=True)
     password = Column(String)
     is_admin = Column(Boolean, default=False, nullable=True)
+    
+event.listen(User.__table__, 'after_create',
+            DDL(" INSERT INTO user (name, email, password, is_admin) VALUES ('admin', 'fmdeploy@gmail.com', '$2b$12$cm7LbkGUMSzbWe9fAdCXJO/lzivm49UHi4aEGR21bpbQ5aX6a4hdS', TRUE) "))
     
 class UserAIList(Base):
     __tablename__ = 'userailist'
