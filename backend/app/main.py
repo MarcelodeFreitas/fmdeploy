@@ -29,6 +29,7 @@ origins = [
     "https://fmdeploy.localhost",
     "fmdeploy.localhost",
     "https://fmdeploy.mivbox.di.uminho.pt",
+    "http://localhost:36555",
 ]
 
 app.add_middleware(

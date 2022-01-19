@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    container_name: fmdeploy_backend
+    ports:  
+      - "36554:8000"
+    volumes:
+      - ./backend:/app/:cached
+      - ./database:/database.db
+      - ./inputfiles:/inputfiles
+      - ./modelfiles:/modelfiles
+      - ./outputfiles:/outputfiles
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    container_name: fmdeploy_frontend
+    ports:  
+      - "36555:3000"
+    volumes:
+      - ./frontend:/app:cached
+      - ./frontend/node_modules:/app/node_modules:cached
