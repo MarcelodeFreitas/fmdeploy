@@ -31,7 +31,7 @@ const App = () => {
               <Route path="/services" exact component={Services} />
               <RoutesNotPrivate path="/auth" exact component={Auth} />
               <Route path='/api' exact component={() => {
-                window.location.href = baseUrl + "/api"
+                window.location.href = baseUrl + "/"
                 return null
               }} />
               <RoutesPrivate path="/my" exact component={My} />

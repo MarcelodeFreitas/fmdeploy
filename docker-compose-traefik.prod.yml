@@ -1,63 +1,60 @@
-# docker-compose.prod.yml
-
-version: '3.8'
+version: '2'
 
 services:
+
+  traefik:
+    build:
+      context: .
+      dockerfile: Dockerfile.traefik
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik-public-certificates:/certificates
+    environment:
+      - "NAMECOM_USERNAME=marcelodefreitas"
+      - "NAMECOM_API_TOKEN=9c22fecbcf9762e6aba891832dc2b39c7fff4747"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.dashboard.rule=Host(`dashboard.fmdeploy.live`)
+      - traefik.http.routers.dashboard.tls=true
+      - traefik.http.routers.dashboard.tls.certresolver=letsencrypt
+      - traefik.http.routers.dashboard.service=api@internal
+      - traefik.http.routers.dashboard.middlewares=auth
+      - traefik.http.middlewares.auth.basicauth.users=testuser:$$apr1$$jIKW.bdS$$eKXe4Lxjgy/rH65wP1iQe1
 
   backend:
     build:
       context: backend
       dockerfile: Dockerfile.prod
-    expose:  
-      - 8000
     volumes:
-      - "./backend:/app/:cached"
-      - "./.docker/.ipython:/root/.ipython:cached"
-      - "./database:/database.db"
-      - "./inputfiles:/inputfiles"
-      - "./modelfiles:/modelfiles"
-      - "./outputfiles:/outputfiles"
+      - ./backend:/app/:cached
+      - ./.docker/.ipython:/root/.ipython:cached
+      - ./database:/database.db
+      - ./inputfiles:/inputfiles
+      - ./modelfiles:/modelfiles
+      - ./outputfiles:/outputfiles
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`api.fmdeploy.live`)" 
-      - "traefik.http.services.backend.loadbalancer.server.port=8000"
-      - "traefik.http.routers.backend.tls=true"
-      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+      - traefik.enable=true"
+      - traefik.http.routers.backend.rule=Host(`api.fmdeploy.live`)
+      - traefik.http.services.backend.loadbalancer.server.port=8000
+      - traefik.http.routers.backend.tls=true
+      - traefik.http.routers.backend.tls.certresolver=letsencrypt
 
   frontend:
     build:
       context: frontend
       dockerfile: Dockerfile.prod
-    expose:  
-      - 3000
     volumes:
-      - './frontend:/app:cached'
-      - './frontend/node_modules:/app/node_modules:cached'
+      - ./frontend:/app:cached
+      - ./frontend/node_modules:/app/node_modules:cached
     labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`app.fmdeploy.live`)"
-      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
-      - "traefik.http.routers.frontend.tls=true"
-      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
-  
-  traefik-backend:
-    build:
-      context: .
-      dockerfile: Dockerfile.traefik
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./traefik-public-certificates:/certificates"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.rule=Host(`dashboard.fmdeploy.live`)"
-      - "traefik.http.routers.dashboard.tls=true"
-      - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.dashboard.service=api@internal"
-      - "traefik.http.routers.dashboard.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=testuser:$$apr1$$jIKW.bdS$$eKXe4Lxjgy/rH65wP1iQe1"
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`www.fmdeploy.live`)
+      - traefik.http.services.backend.loadbalancer.server.port=3000
+      - traefik.http.routers.frontend.tls=true
+      - traefik.http.routers.frontend.tls.certresolver=letsencrypt
 
 volumes:
   traefik-public-certificates:

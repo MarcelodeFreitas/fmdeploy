@@ -15,13 +15,11 @@ app = FastAPI()
 
 #CORS
 origins = [
-    "localhost",
-    "http://localhost:36555",
-    "https://localhost:36555",
-    "http://localhost:36554",
-    "https://localhost:36554",
-    "https://app.fmdeploy.live",
-    "https://fmdeploy.live"
+    "fmdeploy.live",
+    "https://www.fmdeploy.live",
+    "https://www.fmdeploy.live/",
+    "https://api.fmdeploy.live",
+    "https://api.fmdeploy.live/",
 ]
 
 app.add_middleware(
