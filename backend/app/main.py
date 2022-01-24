@@ -16,10 +16,21 @@ app = FastAPI()
 #CORS
 origins = [
     "fmdeploy.live",
+    "www.fmdeploy.live",
+    "api.fmdeploy.live",
     "https://www.fmdeploy.live",
     "https://www.fmdeploy.live/",
     "https://api.fmdeploy.live",
     "https://api.fmdeploy.live/",
+    "https://test1.fmdeploy.live/",
+    "https://test2.fmdeploy.live/",
+    "https://test1.fmdeploy.live",
+    "https://test2.fmdeploy.live",
+    "test2.fmdeploy.live",
+    "test1.localhost",
+    "https://test1.localhost/",
+    "http://localhost:8000/"
+    
 ]
 
 app.add_middleware(
@@ -97,7 +108,7 @@ async def file_cleanup():
     except:
         print("error")
 
-@app.get("/api")
+@app.get("/")
 async def main():
     content = """
         <head>
