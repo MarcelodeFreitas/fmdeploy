@@ -41,12 +41,12 @@ services:
 
   frontend:
     depends_on:
-        - api
+      - api
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
       args:
-          - URI=http://mivbox.di.uminho.pt:36554
+        - URI=http://mivbox.di.uminho.pt:36554
     container_name: client
     ports:  
       - "36555:3000"
