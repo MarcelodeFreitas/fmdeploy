@@ -1,29 +1,26 @@
-import Sidebar from "../../Sidebar"
+import { Component } from "react"
+import axiosInstance from "../../axios/axiosInstance"
 import "../../Sidebar.css"
 import "./Main.css"
 import "./Run.css"
+import Sidebar from "../../Sidebar"
 import AppHeader from "../../AppHeader"
-import { Component } from "react"
-import axios from "axios"
-import baseUrl from "../../server/server"
-import StoreContext from '../../Store/Context'
-import { CircularProgress, Button, Container, Box, InputLabel, MenuItem } from '@material-ui/core'
-import { Form, Formik } from 'formik'
-import * as yup from 'yup'
-import { Field, ErrorMessage } from "formik"
-import { CheckboxWithLabel, TextField, Select } from "formik-material-ui"
+import Cards from "../../Cards"
+import StoreContext from "../../Store/Context"
 import CustomizedSnackbar from "../../Alert"
-import { Anchorme } from 'react-anchorme'
-import Cards from '../../Cards'
+import { CircularProgress, Button, Container, Box, InputLabel, MenuItem } from "@material-ui/core"
+import * as yup from 'yup'
+import { Form, Formik, Field, ErrorMessage } from "formik"
+import { CheckboxWithLabel, TextField, Select } from "formik-material-ui"
+import { Anchorme } from "react-anchorme"
 
-
-export default class New extends Component {
+export default class Edit extends Component {
 
   static contextType = StoreContext
 
   date = new Date(this.props.location.state.created_in)
 
-  formatedDate = new Intl.DateTimeFormat().format(this.date)
+  formatedDate = new Intl.DateTimeFormat('pt').format(this.date)
 
   defaultState = {
     message: "",
@@ -39,15 +36,14 @@ export default class New extends Component {
     }
   }
 
-  //update ai model in the server
-  updateAiModel = async (token, aiId, values) => {
-    console.log(token, aiId, values)
-
+  //update project
+  updateProject = async (token, projectId, values) => {
+    console.log(token, projectId, values)
     try {
-      const response = await axios.put(
-        `${baseUrl}/ai`,
+      const response = await axiosInstance.put(
+        "/project",
         {
-          ai_id: aiId,
+          project_id: projectId,
           title: values.title,
           description: values.description,
           input_type: values.inputType,
@@ -64,15 +60,15 @@ export default class New extends Component {
       console.log(await response)
     } catch (e) {
       this.setState({ message: await e.response.data.detail, severity: "error" })
-      console.log("updateAiModel error: ", e.response.data.detail)
+      console.log("updateProject error: ", e.response.data.detail)
     }
   }
 
-  getModelsById = async (token, aiId) => {
-    console.log(aiId)
+  getProjectById = async (token, projectId) => {
+    console.log(projectId)
     try {
-      const response = await axios.get(
-        `${baseUrl}/ai/${aiId}`,
+      const response = await axiosInstance.get(
+        `/project/${projectId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -82,14 +78,13 @@ export default class New extends Component {
       console.log(await response.data)
       this.setState({ responseData: await response.data })
     } catch (e) {
-      console.log("getModelsById error: ", e.response)
+      console.log("getProjectById error: ", e.response)
       this.setState({ message: e.response.data.detail })
     }
   }
 
 
   render() {
-    console.log(this.props.location.state)
 
     if (this.state.responseData) {
       return (
@@ -100,7 +95,7 @@ export default class New extends Component {
             <AppHeader title={`EDIT: ${this.state.responseData.title}`} button="BACK" buttonIcon="" path="/my" />
             <Container>
               <Container className="run-white-container">
-                <div className="run-data-line"><p className="run-top-label">AI ID:</p> {this.state.responseData.ai_id}</div>
+                <div className="run-data-line"><p className="run-top-label">PROJECT ID:</p> {this.state.responseData.project_id}</div>
                 <br></br>
                 <div className="run-row">
                   <div className="run-column">
@@ -144,8 +139,8 @@ export default class New extends Component {
                     isPrivate: yup.boolean().required("Private is a required field"),
                   })}
                   onSubmit={async (values) => {
-                    await this.updateAiModel(this.context.token, this.props.location.state.ai_id, await values)
-                    await this.getModelsById(this.context.token, this.props.location.state.ai_id)
+                    await this.updateProject(this.context.token, this.props.location.state.project_id, await values)
+                    await this.getProjectById(this.context.token, this.props.location.state.project_id)
                   }}
                 >
                   <Form>
@@ -236,7 +231,7 @@ export default class New extends Component {
             <AppHeader title={`EDIT: ${this.props.location.state.title}`} button="BACK" buttonIcon="" path="/my" />
             <Container>
               <Container className="run-white-container">
-                <div className="run-data-line"><p className="run-top-label">AI ID:</p> {this.props.location.state.ai_id}</div>
+                <div className="run-data-line"><p className="run-top-label">PROJECT ID:</p> {this.props.location.state.project_id}</div>
                 <br></br>
                 <div className="run-row">
                   <div className="run-column">
@@ -278,8 +273,8 @@ export default class New extends Component {
                     isPrivate: yup.boolean().required("Private is a required field"),
                   })}
                   onSubmit={async (values) => {
-                    await this.updateAiModel(this.context.token, this.props.location.state.ai_id, await values)
-                    await this.getModelsById(this.context.token, this.props.location.state.ai_id)
+                    await this.updateProject(this.context.token, this.props.location.state.project_id, await values)
+                    await this.getProjectById(this.context.token, this.props.location.state.project_id)
                   }}
                 >
                   <Form>
@@ -326,10 +321,10 @@ export default class New extends Component {
                             id: 'outputType',
                           }}
                         >
-                            <MenuItem value={".nii.gz"}>.nii.gz</MenuItem>
-                            <MenuItem value={".csv"}>.csv</MenuItem>
-                            <MenuItem value={".png"}>.png</MenuItem>
-                            <MenuItem value={".wav"}>.wav</MenuItem>
+                          <MenuItem value={".nii.gz"}>.nii.gz</MenuItem>
+                          <MenuItem value={".csv"}>.csv</MenuItem>
+                          <MenuItem value={".png"}>.png</MenuItem>
+                          <MenuItem value={".wav"}>.wav</MenuItem>
                         </Field>
                         <ErrorMessage component="div" className="error-message" name="outputType" />
                       </Box>

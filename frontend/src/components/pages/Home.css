@@ -1,5 +1,10 @@
 .home-content {
-    padding: 3rem;
+    padding-bottom: 125px;
+    background: #fff;
+}
+
+.home-padding {
+    padding-bottom: 80px;
     background: #fff;
 }
 

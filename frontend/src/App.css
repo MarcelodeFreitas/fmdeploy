@@ -19,13 +19,22 @@
     justify-content: center;
     font-size: 3rem;
   }
+
+  .docs {
+    display: flex;
+    height: 45vh;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    flex-direction: column;
+  }
   
-  .services {
+  .docs {
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
     color: #fff;
-    font-size: 100px;
+    font-size: 80px;
   }
   
   .products {

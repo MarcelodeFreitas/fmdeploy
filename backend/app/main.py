@@ -1,9 +1,9 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from . import models
 from .database import engine
-from .routers import user, ai, userai, authentication, files
+from .routers import project, user, authentication, files, userproject
 from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi_utils.tasks import repeat_every
@@ -11,26 +11,34 @@ import os
 import time
 import shutil
 
+""" from fastapi_jwt_auth.exceptions import AuthJWTException
+from fastapi.responses import JSONResponse """
+
 app = FastAPI()
+
+""" 
+"mivbox.di.uminho.pt",
+"http://mivbox.di.uminho.pt:36554",
+"http://mivbox.di.uminho.pt:36555",
+"http://mivbox.di.uminho.pt:36554/",
+"http://mivbox.di.uminho.pt:36555/",
+"https://mivbox.di.uminho.pt:36554",
+"https://mivbox.di.uminho.pt:36555",
+"https://mivbox.di.uminho.pt:36554/",
+"https://mivbox.di.uminho.pt:36555/", 
+"""
 
 #CORS
 origins = [
-    "fmdeploy.live",
-    "www.fmdeploy.live",
-    "api.fmdeploy.live",
-    "https://www.fmdeploy.live",
-    "https://www.fmdeploy.live/",
-    "https://api.fmdeploy.live",
-    "https://api.fmdeploy.live/",
-    "https://test1.fmdeploy.live/",
-    "https://test2.fmdeploy.live/",
-    "https://test1.fmdeploy.live",
-    "https://test2.fmdeploy.live",
-    "test2.fmdeploy.live",
-    "test1.localhost",
-    "https://test1.localhost/",
-    "http://localhost:8000/"
-    
+    "mivbox.di.uminho.pt",
+    "http://mivbox.di.uminho.pt:36554",
+    "http://mivbox.di.uminho.pt:36555",
+    "http://mivbox.di.uminho.pt:36554/",
+    "http://mivbox.di.uminho.pt:36555/",
+    "https://mivbox.di.uminho.pt:36554",
+    "https://mivbox.di.uminho.pt:36555",
+    "https://mivbox.di.uminho.pt:36554/",
+    "https://mivbox.di.uminho.pt:36555/",
 ]
 
 app.add_middleware(
@@ -62,9 +70,9 @@ models.Base.metadata.create_all(engine)
 
 app.include_router(authentication.router)
 app.include_router(user.router)
-app.include_router(ai.router)
+app.include_router(project.router)
 app.include_router(files.router)
-app.include_router(userai.router)
+app.include_router(userproject.router)
 
 #delete files that haven't been accessed in 24h, checked every 24h since server start
 @app.on_event("startup")
@@ -97,7 +105,6 @@ async def file_cleanup():
                     fil=os.path.join(roots,f)
                     fil_stat=os.stat(fil)
                     last_access_time=fil_stat.st_atime
-                    """ print(fil, time.ctime(last_access_time)) """
                     if last_access_time < present_time-max_access_time:
                         fil_split = fil.split("\\")
                         dir_path = fil_split[0] + "\\" + fil_split[1] + "\\" + fil_split[2]
@@ -109,7 +116,7 @@ async def file_cleanup():
         print("error")
 
 @app.get("/")
-async def main():
+def landing_page():
     content = """
         <head>
             <link rel="icon" href="static/favicon.ico" />
@@ -175,3 +182,11 @@ async def main():
         </body>
     """
     return HTMLResponse(content=content)
+
+#part of jwt authentication
+""" @app.exception_handler(AuthJWTException)
+def authjwt_exception_handler(request: Request, exc: AuthJWTException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.message}
+    ) """

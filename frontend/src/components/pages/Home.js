@@ -2,27 +2,25 @@ import '../../App.css'
 import Cards from '../Cards'
 import HeroSection from '../HeroSection'
 import Footer from '../Footer'
-import Navbar from '../Navbar'
 import HomeButtons from '../HomeButtons'
 import './Home.css'
-import { Card, Container } from '@material-ui/core'
+import ResponsiveAppBar from '../AppBar'
 
 function Home() {
     return (
         <>
-            <Navbar />
+            <ResponsiveAppBar />
             <HeroSection />
             <HomeButtons />
             <div className="home-content">
+               
+            </div>
+            {/* <div className="home-content">
                 <Container className="home-content">
-                    {/* <div className="home-content-title">
-                    WHO USES FMDEPLOY?
-                </div> */}
                     <Container className="home-content-text">
-                        FMdeploy is an open-source project being created by Marcelo Marreiros. FMdeploy is
-                        freely available, based on Python for server side computing and React to enabled
+                        FMdeploy is an open-source project freely available, based on Python for server side computing and React to enabled
                         quick and easy user interaction. It provides the ability to generate an easy-to-use demo
-                        for Python scripts, from machine learning models to simple functions with only a few line of code.
+                        for Python scripts, from machine learning projects to simple functions with only a few line of code.
                     </Container>
                     <Container className="home-content-text">
                         FMdeploy also includes tools to enable demo sharing and the creation of public demos,
@@ -30,7 +28,7 @@ function Home() {
                     </Container>
                     <Container className="home-content-text">
                         This projects aims to enable users to create a simple way for anyone to make use
-                        of TensorFlow or XGBoost models, or any other python functions.
+                        of TensorFlow or XGBoost projects, or any other python functions.
                     </Container>
                 </Container>
                 <Container className="home-content">
@@ -59,7 +57,7 @@ function Home() {
                         </Container>
                     </Card>
                 </Container>
-            </div>
+            </div> */}
             <Cards />
             <Footer />
         </>

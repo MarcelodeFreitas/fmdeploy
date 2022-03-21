@@ -4,8 +4,6 @@ import "./Main.css"
 import "./Run.css"
 import AppHeader from "../../AppHeader"
 import { useContext, useEffect, useState } from "react"
-import axios from "axios"
-import baseUrl from "../../server/server"
 import StoreContext from '../../Store/Context'
 import { Form, Formik } from "formik"
 import * as yup from 'yup'
@@ -23,6 +21,7 @@ import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import DeleteIcon from '@mui/icons-material/Delete'
 import Cards from '../../Cards'
+import axiosInstance from "../../axios/axiosInstance"
 
 const Share = (props) => {
 
@@ -38,13 +37,13 @@ const Share = (props) => {
   const [shareAiMessage, setShareAiMessage] = useState("")
   const [shareAiMessageSeverity, setShareAiMessageSeverity] = useState("")
 
-  const shareAiModel = async (email, aiId) => {
+  const shareAiModel = async (email, projectId) => {
     try {
-      const response = await axios.post(
-        `${baseUrl}/userai/share`,
+      const response = await axiosInstance.post(
+        "/userproject/share",
         {
           beneficiary_email: email,
-          ai_id: aiId,
+          project_id: projectId,
         },
         {
           headers: {
@@ -61,13 +60,13 @@ const Share = (props) => {
     }
   }
 
-  const stopShareAiModel = async (email, aiId) => {
+  const stopShareAiModel = async (email, projectId) => {
     try {
-      const response = await axios.post(
-        `${baseUrl}/userai/cancel_share`,
+      const response = await axiosInstance.post(
+        "/userproject/cancel_share",
         {
           beneficiary_email: email,
-          ai_id: aiId,
+          project_id: projectId,
         },
         {
           headers: {
@@ -97,10 +96,10 @@ const Share = (props) => {
   }
 
   //get list of beneficiaries from the ai id
-  const getBeneficiaries2 = async (aiId) => {
+  const getBeneficiaries2 = async (projectId) => {
     try {
-      const response = await axios.get(
-        `${baseUrl}/userai/beneficiaries/${aiId}`,
+      const response = await axiosInstance.get(
+        `/userproject/beneficiaries/${projectId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -120,10 +119,10 @@ const Share = (props) => {
   useEffect(() => {
 
     //get list of beneficiaries from the ai id
-    const getBeneficiaries = async (aiId) => {
+    const getBeneficiaries = async (projectId) => {
       try {
-        const response = await axios.get(
-          `${baseUrl}/userai/beneficiaries/${aiId}`,
+        const response = await axiosInstance.get(
+          `/userproject/beneficiaries/${projectId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -140,9 +139,9 @@ const Share = (props) => {
       }
     }
 
-    getBeneficiaries(props.location.state.ai_id)
+    getBeneficiaries(props.location.state.project_id)
 
-  }, [token, props.location.state.ai_id])
+  }, [token, props.location.state.project_id])
 
 
   const StyledTableCell = withStyles((theme) => ({
@@ -182,7 +181,7 @@ const Share = (props) => {
         <AppHeader title={`SHARE: ${props.location.state.title}`} button="BACK" buttonIcon="" path="/my" />
         <Container>
           <Container className="run-white-container">
-            <div className="run-data-line"><p className="run-top-label">AI ID:</p> {props.location.state.ai_id}</div>
+            <div className="run-data-line"><p className="run-top-label">AI ID:</p> {props.location.state.project_id}</div>
             <br></br>
             <div className="run-row">
               <div className="run-column">
@@ -232,8 +231,8 @@ const Share = (props) => {
                         <StyledTableCell>{beneficiary.email}</StyledTableCell>
                         <StyledTableCell align="right">
                           <IconButton aria-label="delete" onClick={async() => { 
-                            await stopShareAiModel(beneficiary.email, props.location.state.ai_id)
-                            await getBeneficiaries2(props.location.state.ai_id)
+                            await stopShareAiModel(beneficiary.email, props.location.state.project_id)
+                            await getBeneficiaries2(props.location.state.project_id)
                             }}>
                             <DeleteIcon/>
                           </IconButton>
@@ -257,8 +256,8 @@ const Share = (props) => {
               })}
               onSubmit={async (values) => {
                 await clearMessage()
-                await shareAiModel(await values.email, props.location.state.ai_id)
-                await getBeneficiaries2(props.location.state.ai_id)
+                await shareAiModel(await values.email, props.location.state.project_id)
+                await getBeneficiaries2(props.location.state.project_id)
               }}
             >
               <Form>

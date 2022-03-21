@@ -21,8 +21,8 @@ const defaultState = {
     pythonScript: "",
     errorPythonScript: "",
     errorModelFiles: "",
-    aiId: "",
-    aiCreatedMessage: "Model created successfully",
+    projectId: "",
+    projectCreatedMessage: "Model created successfully",
     pythonScriptMessage: "Python Script uploaded successfully",
     modelFilesMessage: "Model Files uploaded successfully",
   }
@@ -97,7 +97,7 @@ export default function FormikStepper({ children, ...props }: FormikConfig<Formi
                             </Button>
                         </Grid>
                     ) : null}
-                    {(state.aiCreatedMessage !== "Model created successfully" || state.pythonScriptMessage !== "Python Script uploaded successfully" || state.modelFilesMessage !== "Model Files uploaded successfully") && isLastStep() ? (
+                    {(state.projectCreatedMessage !== "Project created successfully" || state.pythonScriptMessage !== "Python Script uploaded successfully" || state.modelFilesMessage !== "Model Files uploaded successfully") && isLastStep() ? (
                         
                         <Grid item>
                             <Button
@@ -120,7 +120,7 @@ export default function FormikStepper({ children, ...props }: FormikConfig<Formi
                                 type="reset"
                                 onClick={() => { resetForm({}); setStep(0) }}
                             >
-                                New Model
+                                New Project
                             </Button>
                         </Grid>
                     ) : null}

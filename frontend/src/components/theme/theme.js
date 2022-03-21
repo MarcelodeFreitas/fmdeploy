@@ -8,6 +8,9 @@ const theme = createTheme({
     secondary: {
       main: '#FF0000'
     },
+    terciary: {
+      main: '#FFFFFF'
+    },
   },
 })
 

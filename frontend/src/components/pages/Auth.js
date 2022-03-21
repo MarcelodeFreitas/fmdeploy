@@ -2,17 +2,30 @@ import { useState, useContext } from "react"
 import { useHistory } from "react-router-dom"
 import "../../App.css"
 import "./Auth.css"
-import baseUrl from "../server/server"
 import querystring from "querystring"
-import axios from "axios"
 import StoreContext from "../Store/Context"
-import Navbar from "../Navbar"
 import Cards from '../Cards'
+import Footer from '../Footer'
 import CustomizedSnackbar from "../Alert"
-import AuthModal from "./AuthModal"
+import axiosInstance from "../axios/axiosInstance"
+import ResponsiveAppBar from "../AppBar"
+import { Box } from "@material-ui/core"
 
 const initialState = () => {
   return { name: "", email: "", password: "", confirmPassword: "", error: "" }
+}
+
+const style = {
+  minWidth: '320px',
+  marginBottom: '40px',
+  bgcolor: 'background.paper',
+  borderRadius: 5,
+  boxShadow: 24,
+  p: 4,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  alignItems: 'center',
 }
 
 //login function
@@ -25,8 +38,8 @@ const login = async (email, password) => {
     return { token: token, errorMessage: errorMessage }
   } else {
     try {
-      const response = await axios.post(
-        `${baseUrl}/login`,
+      const response = await axiosInstance.post(
+        "/login",
         querystring.stringify({
           username: email,
           password: password,
@@ -46,7 +59,7 @@ const login = async (email, password) => {
       return { token: token, errorMessage: errorMessage }
     }
   }
-};
+}
 
 //register function
 const register = async (name, email, password, confirmPassword) => {
@@ -57,8 +70,8 @@ const register = async (name, email, password, confirmPassword) => {
     return { errorMessage: errorMessage }
   }
   try {
-    await axios.post(
-      `${baseUrl}/user`, {
+    await axiosInstance.post(
+      "/user", {
       name: name,
       email: email,
       password: password,
@@ -162,8 +175,9 @@ export default function Auth() {
 
   return (
     <>
-      <Navbar />
+      <ResponsiveAppBar />
       <div className={"login-container"}>
+      <Box sx={style}>
         {error && <CustomizedSnackbar message={error} severity="error" />}
         <form className={"form"} onSubmit={submitHandler}>
           <div className={"top"}>
@@ -225,7 +239,7 @@ export default function Auth() {
                 onChange={onChange}
                 value={details.password}
                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                title="at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                title="Must Contain 8 Characters, One Uppercase, One Lowercase, and One Number"
                 required
               />
             </div>
@@ -257,9 +271,14 @@ export default function Auth() {
             }
           </div>
         </form>
+        </Box>
       </div>
-      <AuthModal />
+      {/* <div className={"login-container"}>
+        <AuthContainer />
+      </div>
+      <AuthModal /> */}
       <Cards />
+      <Footer />
     </>
   )
 }

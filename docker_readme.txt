@@ -30,13 +30,13 @@ Container number: 36079
 Container link: https://mivbox.di.uminho.pt:36079
 
 Container paths:
-- docker compose file: ml_deploy/fmdeploy/docker-compose-traefik.prod.yml
+- docker compose file: ml_deploy/fmdeploy/docker-compose-v1.prod.yml
 
 1. navigate to directory: ml_deploy/fmdeploy
 cd /mnt/disk2/Docker_filesystem/Neuroimaging_users/ml_deploy/fmdeploy
 
 2. run command to start the new docker container: 
-docker-compose -f docker-compose-traefik.prod.yml up -d --build
+docker-compose -f docker-compose-v1.prod.yml up -d --build
 
 3. test if the following URLs are operational:
     3.1 frontend: http://mivbox.di.uminho.pt:36555
@@ -49,8 +49,8 @@ docker-compose -f docker-compose-traefik.prod.yml up -d --build
 
  
 5. run command to stop container or command to stop and remove:
-    - stop: docker-compose -f docker-compose-traefik.prod.yml stop
-    - stop and remove: docker-compose -f docker-compose-traefik.prod.yml down
+    - stop: docker-compose -f docker-compose-v1.prod.yml stop
+    - stop and remove: docker-compose -f docker-compose-v1.prod.yml down
     
     
 ___________________________________________________________________________________

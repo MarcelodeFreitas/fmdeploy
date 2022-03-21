@@ -21,20 +21,8 @@
   margin-top: 20px;
   margin-bottom: 20px;
   border-radius: 15px;
+  padding: 10px;
 }
-
-.searchbar-field {
-  display: flex;
-  margin-bottom: 12px;
-  margin-top: 2px;
-}
-
-.searchbar-type {
-  display: flex;
-  margin-bottom: 12px;
-  margin-top: 2px;
-}
-
 
   @media only screen and (max-width: 1000px) {
     .main {

@@ -21,7 +21,6 @@ export default function HomeButtons() {
                 buttonStyle="btn--primary"
                 buttonSize="btn--large"
                 path="/docs"
-                target="new"
             >
                 SEE DOCUMENTATION <FontAwesomeIcon icon={faPlayCircle} />
             </Button>
