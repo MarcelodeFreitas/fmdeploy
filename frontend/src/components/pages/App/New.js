@@ -1,18 +1,17 @@
 import { Component } from "react"
-import AppHeader from "../../AppHeader"
-import Sidebar from "../../Sidebar"
+import axiosInstance from "../../axios/axiosInstance"
 import "./Main.css"
 import "./New.css"
-import baseUrl from "../../server/server"
-import axios from "axios"
+import AppHeader from "../../AppHeader"
+import Sidebar from "../../Sidebar"
 import StoreContext from "../../Store/Context"
-import { Card, CardContent, MenuItem, Box, InputLabel } from "@material-ui/core"
+import Cards from '../../Cards'
+import { Card, CardContent, MenuItem, Box, InputLabel, Container } from "@material-ui/core"
+import * as yup from 'yup'
 import { Field, ErrorMessage } from "formik"
 import { CheckboxWithLabel, TextField, Select } from "formik-material-ui"
 import FormikStepper, { FormikStep } from "./formicStepper"
-import * as yup from 'yup'
 import { useDropzone } from "react-dropzone"
-import Cards from '../../Cards'
 
 const defaultState = {
   title: "",
@@ -24,29 +23,29 @@ const defaultState = {
   pythonScript: "",
   errorPythonScript: "",
   errorModelFiles: "",
-  aiId: "",
-  aiCreatedMessage: "",
+  projectId: "",
+  projectCreatedMessage: "",
   pythonScriptMessage: "",
   modelFilesMessage: "",
 }
 
-// Delete an AI model
-const deleteModel = async (token, id) => {
+// Delete project
+const deleteProject = async (token, id) => {
 
-  //delete ai model from server
+  //delete project from server
   try {
-    const response = await axios.delete(
-      `${baseUrl}/ai/${id}`,
+    const response = await axiosInstance.delete(
+      `/project/${id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`
         },
       }
     )
-    console.log("deleteModel response: ", await response)
+    console.log("deleteProject response: ", await response)
     return await response.data.detail
   } catch (e) {
-    console.log("deleteModel error: ", e)
+    console.log("deleteProject error: ", e)
     return e.response.data.detail
   }
 }
@@ -80,13 +79,13 @@ export default class New extends Component {
     }
   }
 
-  //create ai model in the server
-  createAiModel = async (token, values) => {
-    console.log("createAiModel: ", values)
+  //create project
+  createProject = async (token, values) => {
+    console.log("createProject: ", values)
 
     try {
-      const response = await axios.post(
-        `${baseUrl}/ai`,
+      const response = await axiosInstance.post(
+        "/project",
         {
           title: values.title,
           description: values.description,
@@ -100,24 +99,24 @@ export default class New extends Component {
           },
         }
       )
-      console.log("createAiModel response: ", await response)
-      this.setState({ aiId: await response.data.ai_id }, () => console.log("aiId: ", this.state.aiId))
+      console.log("createProject response: ", await response)
+      this.setState({ projectId: await response.data.project_id }, () => console.log("projectId: ", this.state.projectId))
       if (await response.status === 201) {
-        return "Model created successfully"
+        return "Project created successfully"
       }
     } catch (e) {
-      console.log("createAiModel error: ", e.response)
+      console.log("createProject error: ", e.response, e.response.data.detail)
       return e.response.data.detail
     }
   }
 
-  //add pythonscript to the ai model
-  uploadPythonScript = async (token, values, ai_id) => {
-    console.log("uploadPythonScript: ", ai_id)
+  //add pythonscript to the project
+  uploadPythonScript = async (token, values, project_id) => {
+    console.log("uploadPythonScript: ", project_id)
     try {
       const formData = new FormData()
       formData.append('python_file', values.pythonScript)
-      const response = axios.post(`${baseUrl}/files/pythonscript/${this.state.aiId}`, formData, {
+      const response = axiosInstance.post(`/files/pythonscript/${this.state.projectId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`
@@ -127,15 +126,15 @@ export default class New extends Component {
       return "Python Script uploaded successfully"
     } catch (e) {
       console.log("uploadPythonScript error: ", e.response)
-      deleteModel(token, ai_id)
+      deleteProject(token, project_id)
       return e.response.data.detail
     }
 
   }
 
-  //add modelfiles to the ai model
-  uploadModelFiles = async (token, values, ai_id) => {
-    console.log("uploadModelFiles: ", ai_id)
+  //add modelfiles to the project
+  uploadModelFiles = async (token, values, project_id) => {
+    console.log("uploadModelFiles: ", project_id)
     try {
       const formData = new FormData()
 
@@ -143,7 +142,7 @@ export default class New extends Component {
         formData.append('model_files', item)
       })
 
-      const response = axios.post(`${baseUrl}/files/modelfiles/${this.state.aiId}`, formData, {
+      const response = axiosInstance.post(`/files/modelfiles/${this.state.projectId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`
@@ -163,12 +162,12 @@ export default class New extends Component {
     return (
       <div>
         <div className="submit-result-element">
-          <div className="submit-result-label">1. Create Model</div>
+          <div className="submit-result-label">1. Create Project</div>
           <div className="submit-result-message">
-            {this.state.aiCreatedMessage === 'Model created successfully' ?
-              <p>{this.state.aiCreatedMessage}</p>
+            {this.state.projectCreatedMessage === 'Project created successfully' ?
+              <p>{this.state.projectCreatedMessage}</p>
               :
-              <p style={{color: "red"}}>{this.state.aiCreatedMessage}</p>
+              <p style={{ color: "red" }}>{this.state.projectCreatedMessage}</p>
             }
           </div>
         </div>
@@ -178,7 +177,7 @@ export default class New extends Component {
             {this.state.pythonScriptMessage === 'Python Script uploaded successfully' ?
               <p>{this.state.pythonScriptMessage}</p>
               :
-              <p style={{color: "red"}}>{this.state.pythonScriptMessage}</p>
+              <p style={{ color: "red" }}>{this.state.pythonScriptMessage}</p>
             }
           </div>
         </div>
@@ -188,7 +187,7 @@ export default class New extends Component {
             {this.state.modelFilesMessage === 'Model Files uploaded successfully' ?
               <p>{this.state.modelFilesMessage}</p>
               :
-              <p style={{color: "red"}}>{this.state.modelFilesMessage}</p>
+              <p style={{ color: "red" }}>{this.state.modelFilesMessage}</p>
             }
           </div>
         </div>
@@ -257,7 +256,6 @@ export default class New extends Component {
         </div>
       )
     }
-
 
     const PythonScriptDropzone = ({
       field: { value }, // { name, value, onChange, onBlur }
@@ -368,157 +366,163 @@ export default class New extends Component {
 
         <Sidebar />
         <div className="main">
-          <AppHeader title="New Model" button="BACK" buttonIcon="" path="/my" />
+          <AppHeader title="New Project" button="BACK" buttonIcon="" path="/my" />
           <div className="content">
 
             <div className="material-ui-card">
               <Card>
                 <CardContent>
-                  <FormikStepper
-                    initialValues={defaultState}
-                    state={() => this.state}
-                    onSubmit={async (values) => {
-                      console.log(values)
-                      const aiCreatedMessage = await this.createAiModel(this.context.token, await values)
-                      const pythonScriptMessage = await this.uploadPythonScript(this.context.token, await values, this.state.aiId)
-                      if (pythonScriptMessage === "Python Script uploaded successfully" && values.modelFiles.length > 0) {
-                        const modelFilesMessage = await this.uploadModelFiles(this.context.token, await values, this.state.aiId)
-                        this.setState({ aiCreatedMessage: aiCreatedMessage, pythonScriptMessage: pythonScriptMessage, modelFilesMessage: modelFilesMessage })
-                      } else {
-                        this.setState({ aiCreatedMessage: aiCreatedMessage, pythonScriptMessage: pythonScriptMessage, modelFilesMessage: "No model files were submitted" })
+                  <Container>
+                    <FormikStepper
+                      initialValues={defaultState}
+                      state={() => this.state}
+                      onSubmit={async (values) => {
+                        console.log(values)
+                        const projectCreatedMessage = await this.createProject(this.context.token, await values)
+                        const pythonScriptMessage = await this.uploadPythonScript(this.context.token, await values, this.state.projectId)
+                        if (pythonScriptMessage === "Python Script uploaded successfully" && values.modelFiles.length > 0) {
+                          const modelFilesMessage = await this.uploadModelFiles(this.context.token, await values, this.state.projectId)
+                          this.setState({ projectCreatedMessage: projectCreatedMessage, pythonScriptMessage: pythonScriptMessage, modelFilesMessage: modelFilesMessage })
+                        } else {
+                          this.setState({ projectCreatedMessage: projectCreatedMessage, pythonScriptMessage: pythonScriptMessage, modelFilesMessage: "No model files were submitted" })
+                        }
+                        return this.state
                       }
-                      return this.state
                       }
-                    }
-                  >
+                    >
 
-                    <FormikStep
-                      label="Create Model"
-                      validationSchema={yup.object().shape({
-                        title: yup.string().max(60).required("Title is a required field"),
-                        description: yup.string().required("Description is a required field"),
-                        inputType: yup.string().required("Input Type is a required field"),
-                        outputType: yup.string().required("Output Type is a required field"),
-                        isPrivate: yup.boolean().required("Private is a required field"),
-                      })}>
-                      <Box paddingBottom={2}>
+                      <FormikStep
+                        label="Create Project"
+                        validationSchema={yup.object().shape({
+                          title: yup.string().max(60).required("Title is a required field"),
+                          description: yup.string().required("Description is a required field"),
+                          inputType: yup.string().required("Input Type is a required field"),
+                          outputType: yup.string().required("Output Type is a required field"),
+                          isPrivate: yup.boolean().required("Private is a required field"),
+                        })}>
                         <Box paddingBottom={2}>
-                          <Field fullWidth
-                            component={TextField}
-                            name="title"
-                            type="text"
-                            label="Title"
-                          />
+                          <Box paddingBottom={2}>
+                            <Field fullWidth
+                              component={TextField}
+                              name="title"
+                              type="text"
+                              label="Title"
+                              variant="standard"
+                            />
+                          </Box>
+                          <Box paddingBottom={4}>
+                            <Field fullWidth
+                              component={TextField}
+                              name="description"
+                              type="text"
+                              label="Description"
+                              InputProps={{ multiline: true }}
+                              variant="standard"
+                            />
+                          </Box>
+                          <Box paddingBottom={4}>
+                            <InputLabel htmlFor="inputType">Input Type</InputLabel>
+                            <Field fullWidth
+                              component={Select}
+                              type="text"
+                              name="inputType"
+                              inputProps={{
+                                id: 'inputType',
+                              }}
+                              variant="standard"
+                            >
+                              <MenuItem value={".nii.gz"}>.nii.gz</MenuItem>
+                              <MenuItem value={".wav"}>.wav</MenuItem>
+                              <MenuItem value={".mp3"}>.mp3</MenuItem>
+                            </Field>
+                            <ErrorMessage component="div" className="error-message" name="inputType" />
+                          </Box>
+                          <Box paddingBottom={4}>
+                            <InputLabel htmlFor="outputType">Output Type</InputLabel>
+                            <Field fullWidth
+                              component={Select}
+                              name="outputType"
+                              inputProps={{
+                                id: 'outputType',
+                              }}
+                              variant="standard"
+                            >
+                              <MenuItem value={".nii.gz"}>.nii.gz</MenuItem>
+                              <MenuItem value={".csv"}>.csv</MenuItem>
+                              <MenuItem value={".png"}>.png</MenuItem>
+                              <MenuItem value={".wav"}>.wav</MenuItem>
+                            </Field>
+                            <ErrorMessage component="div" className="error-message" name="outputType" />
+                          </Box>
+                          <Box paddingBottom={2}>
+                            <Field
+                              component={CheckboxWithLabel}
+                              type="checkbox"
+                              name="isPrivate"
+                              Label={{ label: 'Private' }}
+                            />
+                          </Box>
                         </Box>
-                        <Box paddingBottom={4}>
-                          <Field fullWidth
-                            component={TextField}
-                            name="description"
-                            type="text"
-                            label="Description"
-                            InputProps={{ multiline: true }}
-                          />
-                        </Box>
-                        <Box paddingBottom={4}>
-                          <InputLabel htmlFor="inputType">Input Type</InputLabel>
-                          <Field fullWidth
-                            component={Select}
-                            type="text"
-                            name="inputType"
-                            inputProps={{
-                              id: 'inputType',
-                            }}
-                          >
-                            <MenuItem value={".nii.gz"}>.nii.gz</MenuItem>
-                            <MenuItem value={".wav"}>.wav</MenuItem>
-                            <MenuItem value={".mp3"}>.mp3</MenuItem>
-                          </Field>
-                          <ErrorMessage component="div" className="error-message" name="inputType" />
-                        </Box>
-                        <Box paddingBottom={4}>
-                          <InputLabel htmlFor="outputType">Output Type</InputLabel>
-                          <Field fullWidth
-                            component={Select}
-                            name="outputType"
-                            inputProps={{
-                              id: 'outputType',
-                            }}
-                          >
-                            <MenuItem value={".nii.gz"}>.nii.gz</MenuItem>
-                            <MenuItem value={".csv"}>.csv</MenuItem>
-                            <MenuItem value={".png"}>.png</MenuItem>
-                            <MenuItem value={".wav"}>.wav</MenuItem>
-                          </Field>
-                          <ErrorMessage component="div" className="error-message" name="outputType" />
-                        </Box>
+
+                      </FormikStep>
+
+                      <FormikStep
+                        label="Add Model Files"
+                        validationSchema={yup.object().shape({
+                          pythonScript: yup.mixed().required("Python Script is a required field"),
+                          modelFiles: yup.array().min(0),
+                        })
+                        }>
                         <Box paddingBottom={2}>
-                          <Field
-                            component={CheckboxWithLabel}
-                            type="checkbox"
-                            name="isPrivate"
-                            Label={{ label: 'Private' }}
-                          />
-                        </Box>
-                      </Box>
-
-                    </FormikStep>
-
-                    <FormikStep
-                      label="Add Model Files"
-                      validationSchema={yup.object().shape({
-                        pythonScript: yup.mixed().required("Python Script is a required field"),
-                        modelFiles: yup.array().min(0),
-                      })
-                      }>
-                      <Box paddingBottom={2}>
-                        {/* <Field component={SimpleFileUpload} name="file" label="Simple File Upload" />
+                          {/* <Field component={SimpleFileUpload} name="file" label="Simple File Upload" />
                         <MultipleFileUploadField name="files" /> */}
-                        <div className="new-header">
-                          <p>
-                            2. Add Model Files
-                          </p>
-                        </div>
+                          <div className="new-header">
+                            <p>
+                              2. Add Model Files
+                            </p>
+                          </div>
 
-                        <div>
-                          <label className="new-label" htmlFor="pythonScript">Python Script</label>
-                          {/* <div className="content-box">
+                          <div>
+                            <label className="new-label" htmlFor="pythonScript">Python Script</label>
+                            {/* <div className="content-box">
                 <input type="file" name="pythonScript" onChange={onFileInputChange}/>
               </div> */}
-                          {/* <PythonScriptDropzone /> */}
+                            {/* <PythonScriptDropzone /> */}
 
-                          <Field
-                            component={PythonScriptDropzone}
-                            type="file"
-                            name="pythonScript"
-                            id="pythonScript"
-                          />
+                            <Field
+                              component={PythonScriptDropzone}
+                              type="file"
+                              name="pythonScript"
+                              id="pythonScript"
+                            />
 
 
 
+                          </div>
+
+                          <div>
+                            <label className="new-label" htmlFor="modelFiles">Projects</label>
+                            {/* <ModelFilesDropzone /> */}
+                            <Field
+                              component={ModelFilesDropzone}
+                              type="file"
+                              name="modelFiles"
+                              id="modelFiles"
+                            />
+                          </div>
+
+
+                        </Box>
+                      </FormikStep>
+                      <FormikStep
+                        label="Result">
+                        <div className="submit-result-container">
+                          <this.handleSubmitResult />
                         </div>
 
-                        <div>
-                          <label className="new-label" htmlFor="modelFiles">Models</label>
-                          {/* <ModelFilesDropzone /> */}
-                          <Field
-                            component={ModelFilesDropzone}
-                            type="file"
-                            name="modelFiles"
-                            id="modelFiles"
-                          />
-                        </div>
-
-
-                      </Box>
-                    </FormikStep>
-                    <FormikStep
-                      label="Result">
-                      <div className="submit-result-container">
-                        <this.handleSubmitResult />
-                      </div>
-
-                    </FormikStep>
-                  </FormikStepper>
+                      </FormikStep>
+                    </FormikStepper>
+                  </Container>
                 </CardContent>
               </Card>
 

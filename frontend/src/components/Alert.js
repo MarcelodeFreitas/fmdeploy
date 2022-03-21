@@ -7,18 +7,29 @@ function Alert(props) {
 }
 
 const CustomizedSnackbar = ({ message, severity }) => {
-    console.log(message, severity)
+    console.log("CustomizedSnackbar: ", message, severity)
     const [open, setOpen] = useState(false)
+
+    /* const [content, setContent] = useState({
+        msg: '',
+        svrt: ''
+    }) */
 
     const [state] = useState({
         vertical: 'top',
         horizontal: 'center',
-      });
-    
-      const { vertical, horizontal } = state
+    });
+
+    const { vertical, horizontal } = state
 
     useEffect(() => {
         setOpen(true)
+        /* setContent({
+            ...content,
+            msg: message,
+            svrt: severity,
+        }) */
+
     }, [])
 
     const handleClose = (event, reason) => {
@@ -29,13 +40,21 @@ const CustomizedSnackbar = ({ message, severity }) => {
         setOpen(false)
     }
 
-    return (
-        <Snackbar anchorOrigin={{ vertical, horizontal }} open={open} autoHideDuration={6000} onClose={handleClose} key={vertical + horizontal}>
-            <Alert onClose={handleClose} severity={severity}>
-                {message}
-            </Alert>
-        </Snackbar>
-    )
+    if(message && severity) {
+        return (
+            <Snackbar anchorOrigin={{ vertical, horizontal }} open={open} autoHideDuration={6000} onClose={handleClose} key={vertical + horizontal}>
+                <Alert onClose={handleClose} severity={severity}>
+                    {message}
+                </Alert>
+            </Snackbar>
+        )
+    } else {
+        return (
+            <></>
+        )
+    }
+
+    
 }
 
 export default CustomizedSnackbar

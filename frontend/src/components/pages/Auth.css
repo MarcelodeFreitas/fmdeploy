@@ -6,7 +6,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 6vh;
+    margin-top: 3vh;
 }
 
 .form{
@@ -14,7 +14,6 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding-bottom: 100px;
 }
 
 .inner-form {
@@ -26,7 +25,7 @@ body {
 
 .form-group{
     padding: 0.3em;
-    color: #fff;
+    color: #0000;
     display: block;
 }
 
@@ -36,9 +35,7 @@ body {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
-    margin-top: 10%;
-    margin-bottom: 10%;
+    width: 45%;
 }
 
 .top > h1 {
@@ -47,13 +44,14 @@ body {
     margin-bottom: 1em;
 }
 
-input, label {
+.form-group > input, label {
     display:block;
 }
 
 .auth-label {
     padding: 0 1em 0.2em;
     font-size: 14px;
+    color: #000;
 }
 
 .auth-input {
@@ -61,7 +59,7 @@ input, label {
     letter-spacing: 0.05em;
 }
 
-input[type=name] {
+.form-group > input[type=name] {
     padding:10px; 
     border:3px solid #0385B0; 
     -webkit-border-radius: 5px;
@@ -70,7 +68,7 @@ input[type=name] {
     height: 35px;
 }
 
-input[type=name]:focus {
+.form-group > input[type=name]:focus {
     border-color:#fff;
 }
 
@@ -87,7 +85,7 @@ input[type=name]:focus {
     border-color:#fff;
 }
 
-input[type=password] {
+.form-group > input[type=password] {
     padding:10px; 
     border:3px solid #0385B0; 
     -webkit-border-radius: 5px;
@@ -96,7 +94,7 @@ input[type=password] {
     height: 35px;
 }
 
-input[type=password]:focus {
+.form-group > input[type=password]:focus {
     border-color:#fff;
 }
 
@@ -124,22 +122,24 @@ input[type=password]:focus {
 }
 
 .slider {
-    margin-top: 1em;
-    margin-bottom: 2em;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    color: #000;
 }
 
 .slider-labels {
-    color: #fff;
+    color: #000;
 }
 
 .slider-text {
+    color: #000;
     display: inline-block;
     text-align: center;
     width: 125px;
     cursor:pointer;
 }
 
-hr {
+.login-container hr {
     display: inline-block;
     width: 125px; 
 }

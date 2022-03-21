@@ -1,5 +1,4 @@
 import * as React from 'react'
-import axios from "axios"
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
@@ -190,7 +189,7 @@ export default function AuthModal() {
                             alt="FMdeploy.jpg"
                         />
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                            RasBet
+                            FMdeploy
                         </Typography>
                     </Box>
                 </Box>

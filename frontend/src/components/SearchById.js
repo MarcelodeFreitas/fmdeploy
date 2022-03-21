@@ -5,7 +5,7 @@ import { useState } from "react"
 
 const SearchById = (props) => {
 
-  const [aiId, setAiId] = useState("")
+  const [projectId, setAiId] = useState("")
 
   const onChange = (event) => {
     const { value, name } = event.target
@@ -14,15 +14,15 @@ const SearchById = (props) => {
   }
 
   const submitHandler = async () => {
-    const getModelsById = await props.getModelsById(aiId)
-    console.log(typeof getModelsById)
-    if (typeof getModelsById === "string") {
-      console.log(getModelsById)
-      await props.handleMessage(getModelsById)
+    const getProjectById = await props.getProjectById(projectId)
+    console.log(typeof getProjectById)
+    if (typeof getProjectById === "string") {
+      console.log(getProjectById)
+      await props.handleMessage(getProjectById)
     } else {
-      if ([getModelsById].length > 0) {
-        console.log("getModelsById: ", [getModelsById])
-        await props.fetchModelById([getModelsById])
+      if ([getProjectById].length > 0) {
+        console.log("getProjectById: ", [getProjectById])
+        await props.fetchModelById([getProjectById])
       }
     }
     
@@ -41,10 +41,10 @@ const SearchById = (props) => {
         id="search"
         placeholder="Search by Model ID"
         onChange={onChange}
-        value={aiId}
+        value={projectId}
         required
       />
-      {aiId !== "" &&
+      {projectId !== "" &&
         <FontAwesomeIcon icon={faTimes} className={"clear-icon"} onClick={() => handleReset()} />
       }
       <FontAwesomeIcon icon={faSearch} className={"search-icon"} onClick={() => submitHandler()} />
