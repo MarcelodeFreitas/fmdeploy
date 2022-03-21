@@ -16,15 +16,29 @@ from fastapi.responses import JSONResponse """
 
 app = FastAPI()
 
+""" 
+"mivbox.di.uminho.pt",
+"http://mivbox.di.uminho.pt:36554",
+"http://mivbox.di.uminho.pt:36555",
+"http://mivbox.di.uminho.pt:36554/",
+"http://mivbox.di.uminho.pt:36555/",
+"https://mivbox.di.uminho.pt:36554",
+"https://mivbox.di.uminho.pt:36555",
+"https://mivbox.di.uminho.pt:36554/",
+"https://mivbox.di.uminho.pt:36555/", 
+"""
+
 #CORS
 origins = [
-    "fmdeploy.live",
-    "test3.fmdeploy.live",
-    "test4.fmdeploy.live",
-    "https://test3.fmdeploy.live",
-    "https://test4.fmdeploy.live",
-    "http://test3.fmdeploy.live",
-    "http://test4.fmdeploy.live",
+    "mivbox.di.uminho.pt",
+    "http://mivbox.di.uminho.pt:36554",
+    "http://mivbox.di.uminho.pt:36555",
+    "http://mivbox.di.uminho.pt:36554/",
+    "http://mivbox.di.uminho.pt:36555/",
+    "https://mivbox.di.uminho.pt:36554",
+    "https://mivbox.di.uminho.pt:36555",
+    "https://mivbox.di.uminho.pt:36554/",
+    "https://mivbox.di.uminho.pt:36555/",
 ]
 
 app.add_middleware(
