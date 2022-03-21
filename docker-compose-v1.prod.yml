@@ -68,7 +68,27 @@ services:
       - traefik.http.services.backend.loadbalancer.server.port=8000
       - traefik.http.routers.backend.entrypoints=websecure
       - traefik.http.routers.backend.tls.certresolver=letsencrypt
-    
+
+  frontend:
+    depends_on:
+      - backend
+    container_name: frontend
+    build:
+      context: frontend
+      dockerfile: Dockerfile.prod
+      args:
+          - URI=https://test3.fmdeploy.live
+    volumes:
+      - ./frontend:/app:cached
+      - ./frontend/node_modules:/app/node_modules:cached
+      - ./frontend/build:/build
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`test4.fmdeploy.live`)
+      - traefik.http.routers.frontend.service=frontend
+      - traefik.http.services.frontend.loadbalancer.server.port=3000
+      - traefik.http.routers.frontend.entrypoints=websecure
+      - traefik.http.routers.frontend.tls.certresolver=letsencrypt
 
 
 networks:
