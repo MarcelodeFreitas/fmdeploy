@@ -33,7 +33,6 @@ services:
       - "36554:8000"
     volumes:
       - ./backend:/app/:cached
-      - ./database:/database.db
       - ./inputfiles:/inputfiles
       - ./modelfiles:/modelfiles
       - ./outputfiles:/outputfiles
@@ -47,7 +46,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.prod
       args:
-          - URI=http://localhost:36554
+          - URI=http://mivbox.di.uminho.pt:36554
     container_name: client
     ports:  
       - "36555:3000"

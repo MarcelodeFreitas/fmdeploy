@@ -18,17 +18,13 @@ app = FastAPI()
 
 #CORS
 origins = [
-    "mivbox.di.uminho.pt",
-    "http://mivbox.di.uminho.pt:36554",
-    "http://mivbox.di.uminho.pt:36554/",
-    "http://mivbox.di.uminho.pt:36555",
-    "http://mivbox.di.uminho.pt:36555/",
-    "http://localhost:36554",
-    "http://localhost:36554/",
-    "http://localhost:36555",
-    "http://localhost:36555/",
-    "localhost"
-    
+    "fmdeploy.live",
+    "test3.fmdeploy.live",
+    "test4.fmdeploy.live",
+    "https://test3.fmdeploy.live",
+    "https://test4.fmdeploy.live",
+    "http://test3.fmdeploy.live",
+    "http://test4.fmdeploy.live",
 ]
 
 app.add_middleware(
