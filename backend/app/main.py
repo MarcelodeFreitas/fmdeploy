@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from . import models
 from .database import engine
-from .routers import project, user, authentication, files, userproject
+from .routers import project, user, authentication, files, userproject, angelica
 from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi_utils.tasks import repeat_every
@@ -31,6 +31,8 @@ app = FastAPI()
 #CORS
 origins = [
     "mivbox.di.uminho.pt",
+    "http://localhost:36554",
+    "http://localhost:36555",
     "http://mivbox.di.uminho.pt:36554",
     "http://mivbox.di.uminho.pt:36555",
     "http://mivbox.di.uminho.pt:36554/",
@@ -73,6 +75,7 @@ app.include_router(user.router)
 app.include_router(project.router)
 app.include_router(files.router)
 app.include_router(userproject.router)
+app.include_router(angelica.router)
 
 #delete files that haven't been accessed in 24h, checked every 24h since server start
 @app.on_event("startup")

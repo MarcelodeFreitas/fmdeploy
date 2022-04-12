@@ -23,7 +23,7 @@ services:
       - local-net
 
   api:
-    links:
+    depends_on:
       - db
     build:
       context: ./backend
@@ -46,7 +46,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.prod
       args:
-        - URI=http://mivbox.di.uminho.pt:36554
+        - URI=http://localhost:36554
     container_name: client
     ports:  
       - "36555:3000"
