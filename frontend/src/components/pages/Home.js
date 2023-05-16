@@ -7,6 +7,12 @@ import './Home.css'
 import ResponsiveAppBar from '../AppBar'
 
 function Home() {
+
+    // delete tokens when a tab is closed
+    window.onbeforeunload = function() {
+        localStorage.clear()
+     }
+
     return (
         <>
             <ResponsiveAppBar />

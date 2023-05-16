@@ -1,145 +1,145 @@
 body {
-    background-color: #242222;
+  background-color: #242222;
 }
 
 .login-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 3vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3vh;
 }
 
-.form{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .inner-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.form-group{
-    padding: 0.3em;
-    color: #0000;
-    display: block;
+.form-group {
+  padding: 0.3em;
+  color: #0000;
+  display: block;
 }
 
-.login-logo{
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 45%;
+.login-logo {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 45%;
 }
 
 .top > h1 {
-    text-align: center;
-    color: #fff;
-    margin-bottom: 1em;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 1em;
 }
 
-.form-group > input, label {
-    display:block;
+.form-group > input,
+label {
+  display: block;
 }
 
 .auth-label {
-    padding: 0 1em 0.2em;
-    font-size: 14px;
-    color: #000;
+  padding: 0 1em 0.2em;
+  font-size: 14px;
+  color: #000;
 }
 
 .auth-input {
-    padding: 0 2em;
-    letter-spacing: 0.05em;
+  padding: 0 2em;
+  letter-spacing: 0.05em;
 }
 
-.form-group > input[type=name] {
-    padding:10px; 
-    border:3px solid #0385B0; 
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    width: 250px;
-    height: 35px;
+.form-group > input[type="name"] {
+  padding: 10px;
+  border: 3px solid #0385b0;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  width: 250px;
+  height: 35px;
 }
 
-.form-group > input[type=name]:focus {
-    border-color:#fff;
+.form-group > input[type="name"]:focus {
+  border-color: #fff;
 }
 
 .auth-email {
-    padding:10px; 
-    border:3px solid #0385B0; 
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    width: 250px;
-    height: 35px;
+  padding: 10px;
+  border: 3px solid #0385b0;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  width: 250px;
+  height: 35px;
 }
 
 .auth-email:focus {
-    border-color:#fff;
+  border-color: #fff;
 }
 
-.form-group > input[type=password] {
-    padding:10px; 
-    border:3px solid #0385B0; 
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    width: 250px;
-    height: 35px;
+.form-group > input[type="password"] {
+  padding: 10px;
+  border: 3px solid #0385b0;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  width: 250px;
+  height: 35px;
 }
 
-.form-group > input[type=password]:focus {
-    border-color:#fff;
+.form-group > input[type="password"]:focus {
+  border-color: #fff;
 }
 
 .auth-button {
-    width: 250px; 
-    height: 35px;
-    background:#0385B0; 
-    border:0 none;
-    cursor:pointer;
-    -webkit-border-radius: 5px;
-    border-radius: 5px; 
-    margin: auto;
-    color: #fff;
-    font-weight: bold;
-    font-size: 16px;
+  width: 250px;
+  height: 35px;
+  background: #0385b0;
+  border: 0 none;
+  cursor: pointer;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  margin: auto;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 .auth-button:hover {
-    background:#51ADCE; 
-
+  background: #51adce;
 }
 
 .button-holder {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .slider {
-    margin-top: 2em;
-    margin-bottom: 1em;
-    color: #000;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  color: #000;
 }
 
 .slider-labels {
-    color: #000;
+  color: #000;
 }
 
 .slider-text {
-    color: #000;
-    display: inline-block;
-    text-align: center;
-    width: 125px;
-    cursor:pointer;
+  color: #000;
+  display: inline-block;
+  text-align: center;
+  width: 125px;
+  cursor: pointer;
 }
 
 .login-container hr {
-    display: inline-block;
-    width: 125px; 
+  display: inline-block;
+  width: 125px;
 }

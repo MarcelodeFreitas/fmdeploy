@@ -151,12 +151,12 @@ class UserSettings extends Component {
                     )
                   })}
                   onSubmit={async (values) => {
-                    console.log(await values)
+                    console.log("UserSettings: ", await values)
                     await this.updateUser(this.context.token, await values)
                     await this.getCurrentUser(this.context.token)
                     this.updateAlert(this.state.message, this.state.severity)
                     if (values.email || values.password) {
-                      console.log("HISTORY2: ", this.props.history)
+                      console.log("UserSettings HISTORY2: ", this.props.history)
                       this.props.history.push({
                         pathname: `/auth-redirect`,
                         state: { location: { pathname: 'user-settings' }, message: this.state.message, severity: this.state.severity }

@@ -467,7 +467,7 @@ export default class New extends Component {
                       </FormikStep>
 
                       <FormikStep
-                        label="Add Model Files"
+                        label="Add Project Files"
                         validationSchema={yup.object().shape({
                           pythonScript: yup.mixed().required("Python Script is a required field"),
                           modelFiles: yup.array().min(0),
@@ -478,7 +478,7 @@ export default class New extends Component {
                         <MultipleFileUploadField name="files" /> */}
                           <div className="new-header">
                             <p>
-                              2. Add Model Files
+                              2. Add Project Files
                             </p>
                           </div>
 
@@ -501,7 +501,7 @@ export default class New extends Component {
                           </div>
 
                           <div>
-                            <label className="new-label" htmlFor="modelFiles">Projects</label>
+                            <label className="new-label" htmlFor="modelFiles">Models</label>
                             {/* <ModelFilesDropzone /> */}
                             <Field
                               component={ModelFilesDropzone}

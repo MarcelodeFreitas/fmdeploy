@@ -1,14 +1,14 @@
-.main{
-    background-color: #F3F3F3;
-    min-height: 100vh;
-    padding-bottom: 200px;
+.main {
+  background-color: #f3f3f3;
+  min-height: 100vh;
+  padding-bottom: 200px;
 }
 
 .content-table {
-    max-height: 70vh;
-    overflow: auto;
-    width: 100%;
-    background-color: #F3F3F3;
+  max-height: 70vh;
+  overflow: auto;
+  width: 100%;
+  background-color: #f3f3f3;
 }
 
 .searchbars {
@@ -24,16 +24,14 @@
   padding: 10px;
 }
 
-  @media only screen and (max-width: 1000px) {
-    .main {
-        height: auto;
-    }
+@media only screen and (max-width: 1000px) {
+  .main {
+    height: auto;
   }
+}
 
-
-  @media only screen and (max-width: 650px) {
-    .searchbars { 
-      flex-direction: column;
-    }
-    
+@media only screen and (max-width: 650px) {
+  .searchbars {
+    flex-direction: column;
   }
+}

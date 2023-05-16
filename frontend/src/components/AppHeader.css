@@ -1,17 +1,18 @@
 .header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  hyphens: auto;
 }
 
 .title {
-    text-align: left;
-    padding-top: 0.2em;
-    color: #0385B0;
+  text-align: left;
+  padding-top: 0.2em;
+  color: #0385b0;
 }
 
 .line {
-    border: 1px solid #fff;
-    width: 100%;
-    margin-top: 15px;
+  border: 1px solid #fff;
+  width: 100%;
+  margin-top: 15px;
 }

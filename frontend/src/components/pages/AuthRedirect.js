@@ -157,7 +157,7 @@ export default function AuthRedirect(props) {
 
                 </div>
 
-                <Stack sx={{ m: 1, width: '270px', marginTop: '10px' }} spacing={2}>
+                <Stack sx={{ width: '270px', marginTop: '10px' }} spacing={2}>
                     {message.content && message.type === "success" &&
                         <Alert severity="success">{message.content}</Alert>
                     }
@@ -196,48 +196,50 @@ export default function AuthRedirect(props) {
                             />
                         </FormControl>
                     } */}
-                    <FormControl sx={{ m: 1, width: '270px' }} variant="outlined">
-                        <InputLabel htmlFor="outlined-adornment-email" required>Email</InputLabel>
-                        <OutlinedInput
-                            id="outlined-adornment-email"
-                            type="text"
-                            value={values.email}
-                            onChange={handleChange('email')}
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <EmailIcon
-                                        aria-label="email"
-                                        color="primary"
-                                        edge="end"
-                                        disabled />
-                                </InputAdornment>
-                            }
-                            label="Email"
-                        />
-                    </FormControl>
-                    <FormControl sx={{ m: 1, width: '270px' }} variant="outlined">
-                        <InputLabel htmlFor="outlined-adornment-password" required>Password</InputLabel>
-                        <OutlinedInput
-                            id="outlined-adornment-password"
-                            type={values.showPassword ? 'text' : 'password'}
-                            value={values.password}
-                            onChange={handleChange('password')}
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        color="primary"
-                                        onClick={handleClickShowPassword}
-                                        onMouseDown={handleMouseDownPassword}
-                                        edge="end"
-                                    >
-                                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                            label="Password"
-                        />
-                    </FormControl>
+                    <div>
+                        <FormControl style={{ paddingBottom: "10px", width: '270px' }} variant="outlined" size="medium">
+                            <InputLabel required>Email</InputLabel>
+                            <OutlinedInput
+                                type="email"
+                                value={values.email}
+                                onChange={handleChange('email')}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <EmailIcon
+                                            aria-label="email"
+                                            color="primary"
+                                            edge="end"
+                                            disabled />
+                                    </InputAdornment>
+                                }
+                                label="Email"
+                            />
+                        </FormControl>
+                        <FormControl sx={{ paddingBottom: "10px", width: '270px' }} variant="outlined" size="medium">
+                            <InputLabel htmlFor="outlined-adornment-password" required>Password</InputLabel>
+                            <OutlinedInput
+                                id="outlined-adornment-password"
+                                type={values.showPassword ? 'text' : 'password'}
+                                value={values.password}
+                                onChange={handleChange('password')}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            color="primary"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                label="Password"
+                            />
+                        </FormControl>
+                    </div>
+
                     {/* {mode &&
                         <FormControl sx={{ m: 1, width: '270px' }} variant="outlined">
                             <InputLabel htmlFor="outlined-adornment-confirmPassword" required>Confirm Password</InputLabel>
@@ -263,7 +265,7 @@ export default function AuthRedirect(props) {
                             />
                         </FormControl>
                     } */}
-                    <Box sx={{ m: 1 }}>
+                    <Box>
                         {/* {mode ?
                             <Button variant="contained" sx={{ bgColor: '#0385B0', width: '270px', height: '50px' }} onClick={() => register(values)}>REGISTER</Button>
                             :
