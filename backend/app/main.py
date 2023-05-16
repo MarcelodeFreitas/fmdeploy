@@ -8,12 +8,13 @@ from .routers import (
     user,
     authentication,
     files,
-    auth,
-    jwtauth,
+ 
     userproject,
     angelica,
     runhistory,
 )
+"""    auth,
+    jwtauth, """
 from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi_utils.tasks import repeat_every
@@ -21,14 +22,36 @@ import os
 import time
 import shutil
 
-from fastapi_jwt_auth.exceptions import AuthJWTException
+""" from fastapi_jwt_auth.exceptions import AuthJWTException """
 from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
-# CORS
+""" # CORS
 origins = [
     "http://localhost:3000",
+] """
+
+""" 
+"mivbox.di.uminho.pt",
+"http://mivbox.di.uminho.pt:36554",
+"http://mivbox.di.uminho.pt:36555",
+"http://mivbox.di.uminho.pt:36554/",
+"http://mivbox.di.uminho.pt:36555/",
+"https://mivbox.di.uminho.pt:36554",
+"https://mivbox.di.uminho.pt:36555",
+"https://mivbox.di.uminho.pt:36554/",
+"https://mivbox.di.uminho.pt:36555/", 
+"""
+
+#CORS
+# CORS
+origins = [
+    "mivbox.di.uminho.pt",
+    "http://localhost:36554",
+    "http://localhost:36555",
+    "http://localhost:36554/",
+    "http://localhost:36555/",
 ]
 
 app.add_middleware(

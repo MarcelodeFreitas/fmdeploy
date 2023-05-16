@@ -1,3 +1,3 @@
 FROM mysql:5.7
 
-RUN touch /var/log/mysql/mysqld.log
+RUN mkdir -p /var/log/mysql && touch /var/log/mysql/mysqld.log && chown -R mysql:mysql /var/log/mysql

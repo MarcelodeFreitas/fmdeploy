@@ -537,7 +537,7 @@ const Run = () => {
                     )}
                   </div>
                 </div>
-                {outputFileName && (role === "admin" || role === "user") ? (
+                {outputFileName && role !== "guest" && (
                   <div className="run-buttons">
                     <div
                       className="clear-button-fat"
@@ -549,7 +549,8 @@ const Run = () => {
                       FLAG
                     </div>
                   </div>
-                ) : (
+                )}
+                {outputFileName && role === "guest" && (
                   <div className="run-button">
                     <div
                       className="clear-button-fat"
