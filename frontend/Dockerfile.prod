@@ -1,25 +1,41 @@
-#1 build react app
+#1 build react app enviroment
 FROM node:16 AS build
 
 WORKDIR /fmdeploy
-
+ENV PATH /app/node_modules/.bin:$PATH
 ADD . /fmdeploy
-ADD package.json /package.json
+#ADD package.json /package.json
+#ADD package-lock.json /package-lock.json
 
 # Get build argument and set environment variable
 ARG URI
 ENV REACT_APP_BACKEND_URL=$URI
 
-ENV NODE_PATH=/node_modules
-ENV PATH=$PATH:/node_modules/.bin
-RUN npm install
+#ENV NODE_PATH=/node_modules
+#ENV PATH=$PATH:/node_modules/.bin
+
+COPY package-lock.json ./
+COPY package.json ./
+
+#
+# similar to npm install but primarily intended for use in automated build environments, such as CI/CD pipelines, where consistency and reproducibility are critical
+RUN npm ci
+RUN npm install react-scripts@3.4.1 -g 
 RUN npm run build
 
 #2 build the final image and copy the react build files
+#Here, we take advantage of the multistage build pattern
+#to create a temporary image used for building the artifact
+#– the production-ready React static files – that is then 
+#copied over to the production image. The temporary build image 
+#is discarded along with the original files and folders associated 
+#with the image. This produces a lean, production-ready image.
 FROM nginx:1.21.4
-
 COPY --from=build /fmdeploy/build /usr/share/nginx/html
+#changes to default nginx config due to the usage of React Router
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx/nginx.conf /etc/nginx/conf.d
+
 EXPOSE 3000
 CMD ["nginx", "-g", "daemon off;"]
+

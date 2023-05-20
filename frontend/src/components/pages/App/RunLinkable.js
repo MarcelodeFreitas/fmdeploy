@@ -114,10 +114,14 @@ const Run = () => {
         setFlaggedOutputs(await response.data);
       } catch (e) {
         console.log("getFlaggedOutputs error: ", e.response?.data?.detail);
-        handleMessage(
-          e.response?.data?.detail || "Get flagged outputs failed",
-          "error"
-        );
+        const detail =
+          e?.response?.data?.detail || "Get flagged outputs failed";
+
+        if (detail === "Flagged Output table is empty!") {
+          handleMessage(detail, "info");
+        } else {
+          handleMessage(detail, "error");
+        }
       }
     };
 

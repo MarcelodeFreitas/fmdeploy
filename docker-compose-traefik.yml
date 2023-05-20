@@ -1,21 +1,20 @@
-version: '3.8'
+version: "2"
 
 services:
-
   backend:
     user: root
     build:
       context: backend
       dockerfile: Dockerfile.prod
-    expose:  
+    expose:
       - 8000
     volumes:
       - ./backend:/app/:cached
       - ./.docker/.ipython:/root/.ipython:cached
-      - "./database:/database.db"
-      - "./inputfiles:/inputfiles"
-      - "./modelfiles:/modelfiles"
-      - "./outputfiles:/outputfiles"
+      - ./database:/database.db
+      - ./inputfiles:/inputfiles
+      - ./modelfiles:/modelfiles
+      - ./outputfiles:/outputfiles
     labels:
       - traefik.enable=true
       - traefik.http.routers.fmdeploybackendrouter.rule=Host(`fmdeploy-api.localhost`)
@@ -25,11 +24,11 @@ services:
     build:
       context: frontend
       dockerfile: Dockerfile.prod
-    expose:  
+    expose:
       - 3000
     volumes:
-      - './frontend:/app:cached'
-      - './frontend/node_modules:/app/node_modules:cached'
+      - ./frontend:/app:cached
+      - ./frontend/node_modules:/app/node_modules:cached
     labels:
       - traefik.enable=true
       - traefik.http.routers.fmdeployfrontendrouter.rule=Host(`fmdeploy.localhost`)
@@ -41,5 +40,5 @@ services:
       - 80:80
       - 8081:8080
     volumes:
-      - "./traefik.dev.toml:/etc/traefik/traefik.toml"
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - ./traefik.dev.toml:/etc/traefik/traefik.toml
+      - /var/run/docker.sock:/var/run/docker.sock:ro

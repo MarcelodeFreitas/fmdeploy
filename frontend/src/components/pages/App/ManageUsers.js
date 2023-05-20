@@ -77,7 +77,7 @@ function ManageUsers() {
       }
     };
     fetchUsers();
-  }, [token]);
+  }, [token, message]);
 
   //_______________________________________
   // create user with any role

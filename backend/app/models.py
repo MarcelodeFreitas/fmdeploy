@@ -27,12 +27,12 @@ event.listen(
     User.__table__,
     "after_create",
     DDL(
-        " INSERT INTO user (name, email, password, role) VALUES ('Admin Joe', 'fmdeploy@gmail.com', '$2b$12$cm7LbkGUMSzbWe9fAdCXJO/lzivm49UHi4aEGR21bpbQ5aX6a4hdS', 'admin') "
+        " INSERT INTO user (name, email, password, role) VALUES ('Admin', 'fmdeploy@gmail.com', '$2b$12$cm7LbkGUMSzbWe9fAdCXJO/lzivm49UHi4aEGR21bpbQ5aX6a4hdS', 'admin') "
     ),
 )
 # add one admin the PostgreSQL database after the table User is created
 """ event.listen(User.__table__, 'after_create',
-            DDL(" INSERT INTO \"user\" (name, email, password, role) VALUES ('Admin Joe', 'fmdeploy@gmail.com', '$2b$12$cm7LbkGUMSzbWe9fAdCXJO/lzivm49UHi4aEGR21bpbQ5aX6a4hdS', 'admin') ")) """
+            DDL(" INSERT INTO \"user\" (name, email, password, role) VALUES ('Admin', 'fmdeploy@gmail.com', '$2b$12$cm7LbkGUMSzbWe9fAdCXJO/lzivm49UHi4aEGR21bpbQ5aX6a4hdS', 'admin') ")) """
 
 
 class UserProject(Base):

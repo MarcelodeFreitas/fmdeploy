@@ -52,6 +52,7 @@ origins = [
     "http://localhost:36555",
     "http://localhost:36554/",
     "http://localhost:36555/",
+    "https://client.fmdeploy.me/",
 ]
 
 app.add_middleware(

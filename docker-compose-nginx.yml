@@ -1,0 +1,76 @@
+version: "2"
+
+services:
+  db:
+    container_name: db
+    build: ./backend/docker/mysql
+    restart: always
+    tty: true
+    environment:
+      MYSQL_DATABASE: fmdeploy_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 2f2kir2y49xy6g
+      MYSQL_ROOT_PASSWORD: 2f2kir2y49xy6g
+    ports:
+      - 3307:3306
+    volumes:
+      - ./backend/docker/mysql/initdb.d:/docker-entrypoint-initdb.d
+      - ./backend/docker/mysql/conf.d:/etc/mysql/conf.d
+      - ./backend/log/mysql:/var/log/mysql
+      - persist-mysql:/var/lib/mysql
+    networks:
+      - local-net
+
+  api:
+    depends_on:
+      - db
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    container_name: api
+    ports:
+      - 36554:8000
+    volumes:
+      - ./backend:/app/:cached
+      - ./inputfiles:/inputfiles
+      - ./modelfiles:/modelfiles
+      - ./outputfiles:/outputfiles
+    networks:
+      - local-net
+
+  frontend:
+    depends_on:
+      - api
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+      args:
+        - URI=https://localhost:36554
+    container_name: frontend
+    ports:
+      - 36555:3000
+    volumes:
+      - ./frontend:/app:cached
+      - ./frontend/node_modules:/app/node_modules:cached
+
+  nginx:
+    image: nginx:1.21.4
+    container_name: nginx
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    depends_on:
+      - frontend
+    networks:
+      - local-net
+
+networks:
+  local-net:
+    driver: bridge
+
+volumes:
+  persist-mysql:

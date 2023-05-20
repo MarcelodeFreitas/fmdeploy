@@ -1,0 +1,94 @@
+version: "2"
+
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    restart: always
+    command:
+      #- --log.level=DEBUG
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.myresolver.acme.tlschallenge=true
+      #- --certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+      - --certificatesresolvers.myresolver.acme.email=marcelodefreitas25@gmail.com
+      - --certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json
+    ports:
+      - 443:443
+      - 8080:8080
+    volumes:
+      - ./letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  db:
+    container_name: db
+    build: ./backend/docker/mysql
+    restart: always
+    tty: true
+    environment:
+      MYSQL_DATABASE: fmdeploy_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 2f2kir2y49xy6g
+      MYSQL_ROOT_PASSWORD: 2f2kir2y49xy6g
+    ports:
+      - 3307:3306
+    volumes:
+      - ./backend/docker/mysql/initdb.d:/docker-entrypoint-initdb.d
+      - ./backend/docker/mysql/conf.d:/etc/mysql/conf.d
+      - ./backend/log/mysql:/var/log/mysql
+      - persist-mysql:/var/lib/mysql
+    networks:
+      - local-net
+
+  backend:
+    depends_on:
+      - db
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    container_name: backend
+    ports:
+      - 36555:3000
+    restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=(Host(`fmdeploy.me`) && Path(`/backend`))
+      - traefik.http.routers.backend.entrypoints=websecure
+      - traefik.http.routers.backend.tls.certresolver=myresolver
+    volumes:
+      - ./backend:/app/:cached
+      - ./inputfiles:/inputfiles
+      - ./modelfiles:/modelfiles
+      - ./outputfiles:/outputfiles
+    networks:
+      - local-net
+
+  frontend:
+    depends_on:
+      - backend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+      args:
+        - URI=https://fmdeploy.me/backend
+    container_name: frontend
+    restart: always
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`fmdeploy.me`)
+      - traefik.http.routers.frontend.entrypoints=websecure
+      - traefik.http.routers.frontend.tls.certresolver=myresolver
+    volumes:
+      - ./frontend:/app:cached
+      - ./frontend/node_modules:/app/node_modules:cached
+    networks:
+      - local-net
+
+networks:
+  local-net:
+    driver: bridge
+
+volumes:
+  persist-mysql:
