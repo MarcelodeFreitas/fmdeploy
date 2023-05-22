@@ -6,9 +6,10 @@ services:
     container_name: traefik
     restart: unless-stopped
     command:
-      - --log.level=ERROR
+      - --log.level=DEBUG
       - --api.insecure=true
       - --providers.docker=true
+      - --providers.docker.watch=true
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
@@ -27,6 +28,9 @@ services:
     volumes:
       - ./letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - local-net
+      - proxy
 
   db:
     container_name: db
@@ -45,6 +49,7 @@ services:
       - persist-mysql:/var/lib/mysql
     networks:
       - local-net
+      - proxy
 
   backend:
     depends_on:
@@ -63,8 +68,10 @@ services:
       - ./outputfiles:/outputfiles
     networks:
       - local-net
+      - proxy
     labels:
       - traefik.enable=true
+      - traefik.docker.network=proxy
       - traefik.http.routers.backend.rule=Host(`back.fmdeploy.studio`)
       - traefik.http.routers.backend.service=backend
       - traefik.http.services.backend.loadbalancer.server.port=36554
@@ -73,6 +80,7 @@ services:
 
   frontend:
     depends_on:
+      - db
       - backend
       - traefik
     container_name: frontend
@@ -88,14 +96,20 @@ services:
       - ./frontend/build:/build
     labels:
       - traefik.enable=true
+      - traefik.docker.network=proxy
       - traefik.http.routers.frontend.rule=Host(`front.fmdeploy.studio`)
       - traefik.http.routers.frontend.service=frontend
       - traefik.http.services.frontend.loadbalancer.server.port=36555
       - traefik.http.routers.frontend.entrypoints=websecure
       - traefik.http.routers.frontend.tls.certresolver=letsencrypt
+    networks:
+      - local-net
+      - proxy
 
 networks:
   local-net:
+    driver: bridge
+  proxy:
     driver: bridge
 
 volumes:
