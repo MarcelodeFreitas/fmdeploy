@@ -53,6 +53,8 @@ origins = [
     "http://client.fmdeploy.me",
     "https://front.fmdeploy.me",
     "https://client.fmdeploy.me",
+    "https://front.fmdeploy.studio",
+    "https://client.fmdeploy.studio",
 ]
 
 app.add_middleware(
