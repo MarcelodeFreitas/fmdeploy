@@ -47,12 +47,12 @@ origins = [
 #CORS
 # CORS
 origins = [
-    "mivbox.di.uminho.pt",
-    "http://localhost:36554",
-    "http://localhost:36555",
     "http://localhost:36554/",
     "http://localhost:36555/",
-    "https://client.fmdeploy.me/",
+    "http://front.fmdeploy.me",
+    "http://client.fmdeploy.me",
+    "https://front.fmdeploy.me",
+    "https://client.fmdeploy.me",
 ]
 
 app.add_middleware(
@@ -153,6 +153,73 @@ async def file_cleanup():
     except:
         print("error")
 
+@app.get("/backend")
+def backend():
+    content = """
+        <head>
+            <link rel="icon" href="static/favicon.ico" />
+            <title>FMdeploy API</title>
+        </head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            a.button{background-color: #0385B0;
+                    border: none;
+                    color: white;
+                    padding: 1.1em 2.1em 1.1em;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: .85em;
+                    cursor: pointer; 
+                    margin-right: 100px;
+                    margin-top: 30px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    border-radius: 5px;
+                    width: 25%}
+            .button:hover {
+                color: #0385B0;
+                background-color: white;
+            }
+        </style> 
+        <body style="margin-left: 100px; background-color: #33363B; font-family: sans-serif; height: device-width">
+        <div style="position: fixed;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        padding-top: 20vh">
+            <div style="margin-right: 10%;
+            margin-left: 10%;">
+                <div style="margin-bottom: 10%; ">
+                    <h1 style="color: #0385B0; margin-bottom: 10%; font-size: 2.6vw">Welcome to FMdeploy API Backend !</h1>
+                    <p style="color:white; font-size: 16px">Developed with <a href="https://fastapi.tiangolo.com/" target="_blank" style="color: #0385B0">Fast API</a>. To check the documentation please use one of the links bellow:</p>
+                </div>
+                <a class="button" href="/docs" target="_blank">
+                    Docs Swagger UI
+                </a>
+                <a class="button" href="/redoc" target="_blank">
+                    Docs ReDoc
+                </a>
+            </div>
+            <div style="position: fixed;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background-color: #0385B0;
+            padding-top: 27vh
+            ">
+                <center>
+                    <img src="static/logo2.png" style="max-width:100%; height:auto; margin-left: 10%; margin-right: 10%; margin-bottom: 4%;">
+                    <p style="color: white; font-size: 3vw; text-align: center; font-weight: bold">
+                        FMdeploy
+                    </p>
+                </center>
+        </div> 
+        </body>
+    """
+    return HTMLResponse(content=content)
 
 @app.get("/")
 def landing_page():

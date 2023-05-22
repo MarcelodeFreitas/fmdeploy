@@ -29,7 +29,7 @@ services:
       dockerfile: Dockerfile.prod
     container_name: api
     ports:
-      - 36554:8000
+      - 36554:8081
     volumes:
       - ./backend:/app/:cached
       - ./inputfiles:/inputfiles
