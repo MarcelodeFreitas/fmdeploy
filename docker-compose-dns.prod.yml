@@ -12,12 +12,14 @@ services:
       - --providers.docker.watch=true
       - --providers.docker.exposedbydefault=false
       - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
       - --entrypoints.websecure.address=:443
       - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
       - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=namedotcom
       #- --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
       - --certificatesresolvers.letsencrypt.acme.email=fmdeploy@gmail.com
-      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt-server/acme.json
     ports:
       - "80:80"
       - "443:443"
@@ -26,7 +28,7 @@ services:
       - NAMECOM_USERNAME=leomarreiros
       - NAMECOM_API_TOKEN=f8aac79b4f57a04b9628642174e62359194e7c91
     volumes:
-      - ./letsencrypt:/letsencrypt
+      - ./letsencrypt-server:/letsencrypt-server
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - local-net
@@ -72,7 +74,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=proxy
-      - traefik.http.routers.backend.rule=Host(`back.fmdeploy.studio`)
+      - traefik.http.routers.backend.rule=Host(`api.fmdeploy.studio`)
       - traefik.http.routers.backend.service=backend
       - traefik.http.services.backend.loadbalancer.server.port=36554
       - traefik.http.routers.backend.entrypoints=websecure
@@ -88,7 +90,7 @@ services:
       context: frontend
       dockerfile: Dockerfile.prod
       args:
-        - URI=https://back.fmdeploy.studio
+        - URI=https://api.fmdeploy.studio
     restart: unless-stopped
     volumes:
       - ./frontend:/app:cached
@@ -97,7 +99,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=proxy
-      - traefik.http.routers.frontend.rule=Host(`front.fmdeploy.studio`)
+      - traefik.http.routers.frontend.rule=Host(`client.fmdeploy.studio`)
       - traefik.http.routers.frontend.service=frontend
       - traefik.http.services.frontend.loadbalancer.server.port=36555
       - traefik.http.routers.frontend.entrypoints=websecure

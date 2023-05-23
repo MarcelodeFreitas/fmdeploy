@@ -98,7 +98,7 @@ app.include_router(angelica.router)
 
 # delete files that haven't been accessed in 24h, checked every 24h since server start
 @app.on_event("startup")
-@repeat_every(seconds=60 * 24 * 60)  # repeat every hour
+@repeat_every(seconds=60 * 24 * 60 * 7) # 7 days for production  
 async def file_cleanup():
     try:
         print("Cleaning old files...")

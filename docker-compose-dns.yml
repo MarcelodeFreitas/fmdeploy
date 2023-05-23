@@ -1,0 +1,118 @@
+version: "2"
+
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    restart: unless-stopped
+    command:
+      - --log.level=DEBUG
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.watch=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge=true
+      - --certificatesresolvers.letsencrypt.acme.dnschallenge.provider=namedotcom
+      #- --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+      - --certificatesresolvers.letsencrypt.acme.email=fmdeploy@gmail.com
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    environment:
+      - NAMECOM_USERNAME=leomarreiros
+      - NAMECOM_API_TOKEN=f8aac79b4f57a04b9628642174e62359194e7c91
+    volumes:
+      - ./letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - local-net
+      - proxy
+
+  db:
+    container_name: db
+    build: ./backend/docker/mysql
+    restart: unless-stopped
+    tty: true
+    environment:
+      MYSQL_DATABASE: fmdeploy_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 2f2kir2y49xy6g
+      MYSQL_ROOT_PASSWORD: 2f2kir2y49xy6g
+    volumes:
+      - ./backend/docker/mysql/initdb.d:/docker-entrypoint-initdb.d
+      - ./backend/docker/mysql/conf.d:/etc/mysql/conf.d
+      - ./backend/log/mysql:/var/log/mysql
+      - persist-mysql:/var/lib/mysql
+    networks:
+      - local-net
+      - proxy
+
+  backend:
+    depends_on:
+      - db
+      - traefik
+    container_name: backend
+    build:
+      context: backend
+      dockerfile: Dockerfile.prod
+    restart: unless-stopped
+    volumes:
+      - ./backend:/app/:cached
+      - ./.docker/.ipython:/root/.ipython:cached
+      - ./inputfiles:/inputfiles
+      - ./modelfiles:/modelfiles
+      - ./outputfiles:/outputfiles
+    networks:
+      - local-net
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.backend.rule=Host(`back.fmdeploy.studio`)
+      - traefik.http.routers.backend.service=backend
+      - traefik.http.services.backend.loadbalancer.server.port=36554
+      - traefik.http.routers.backend.entrypoints=websecure
+      - traefik.http.routers.backend.tls.certresolver=letsencrypt
+
+  frontend:
+    depends_on:
+      - db
+      - backend
+      - traefik
+    container_name: frontend
+    build:
+      context: frontend
+      dockerfile: Dockerfile.prod
+      args:
+        - URI=https://back.fmdeploy.studio
+    restart: unless-stopped
+    volumes:
+      - ./frontend:/app:cached
+      - ./frontend/node_modules:/app/node_modules:cached
+      - ./frontend/build:/build
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.frontend.rule=Host(`front.fmdeploy.studio`)
+      - traefik.http.routers.frontend.service=frontend
+      - traefik.http.services.frontend.loadbalancer.server.port=36555
+      - traefik.http.routers.frontend.entrypoints=websecure
+      - traefik.http.routers.frontend.tls.certresolver=letsencrypt
+    networks:
+      - local-net
+      - proxy
+
+networks:
+  local-net:
+    driver: bridge
+  proxy:
+    driver: bridge
+
+volumes:
+  persist-mysql:
