@@ -173,12 +173,12 @@ function ManageUsers() {
         severity={message.severity}
       />
       <div className="main">
-        <AppHeader title="User management" />
+        <AppHeader title="User Management" />
         <Box sx={{ width: "100%", marginTop: "4vh" }}>
           <Stack spacing={2}>
             <Paper sx={{ padding: "10px" }}>
               <div style={{ marginBottom: "15px" }}>
-                <Typography variant="h6">Add user</Typography>
+                <Typography variant="h6">Add User</Typography>
                 <Typography variant="subtitle1">
                   Fill out the form below to add a new user.
                 </Typography>
