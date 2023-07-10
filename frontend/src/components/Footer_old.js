@@ -1,13 +1,18 @@
-import { Button } from './Button'
-import { Link } from 'react-router-dom'
-import './Footer.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faInstagram, faTwitter, faFacebook, faYoutube } from '@fortawesome/free-brands-svg-icons'
+import { Button } from "./Button";
+import { Link } from "react-router-dom";
+import "./Footer.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faInstagram,
+  faTwitter,
+  faFacebook,
+  faYoutube,
+} from "@fortawesome/free-brands-svg-icons";
 
 function Fotter() {
-    return (
-        <div className='footer-container'>
-            {/* <section className='footer-subscription'>
+  return (
+    <div className="footer-container">
+      {/* <section className='footer-subscription'>
                 <p className='footer-subscription-heading'>
                     Join the FMdeploy community, don't let your hard work
                     die in Jupyter Notebooks.
@@ -50,59 +55,67 @@ function Fotter() {
                     </div>
                 </div>
             </div> */}
-            <section className='social-media'>
-                <div className='social-media-wrap'>
-                    <div className='footer-logo'>
-                        <Link to='/' className='social-logo'>
-                            <p style={{ backgroundColor: "#0385B0", padding: "2%", borderRadius: "10%" }}>FM</p>&nbsp;deploy
-                        </Link>
-                    </div>
-                    <small className='website-rights'>FMdeploy © 2022</small>
-                    <div className='social-icons'>
-                        <Link
-                            className='social-icon-link facebook'
-                            to='/'
-                            target='_blank'
-                            aria-label='Facebook'
-                        >
-                            <FontAwesomeIcon icon={faFacebook} />
-                        </Link>
-                        <Link
-                            className='social-icon-link instagram'
-                            to='/'
-                            target='_blank'
-                            aria-label='Instagram'
-                        >
-                            <FontAwesomeIcon icon={faInstagram} />
-                        </Link>
-                        <Link
-                            className='social-icon-link youtube'
-                            to='/'
-                            target='_blank'
-                            aria-label='Youtube'
-                        >
-                            <FontAwesomeIcon icon={faYoutube} />
-                        </Link>
-                        <Link
-                            className='social-icon-link twitter'
-                            to='/'
-                            target='_blank'
-                            aria-label='Twitter'
-                        >
-                            <FontAwesomeIcon icon={faTwitter} />
-                        </Link>
-                        <Link
-                            className='social-icon-link twitter'
-                            to='/'
-                            target='_blank'
-                            aria-label='LinkedIn'
-                        >
-                        </Link>
-                    </div>
-                </div>
-            </section>
+      <section className="social-media">
+        <div className="social-media-wrap">
+          <div className="footer-logo">
+            <Link to="/" className="social-logo">
+              <p
+                style={{
+                  backgroundColor: "#0385B0",
+                  padding: "2%",
+                  borderRadius: "10%",
+                }}
+              >
+                FM
+              </p>
+              &nbsp;deploy
+            </Link>
+          </div>
+          <small className="website-rights">FMdeploy © 2023</small>
+          <div className="social-icons">
+            <Link
+              className="social-icon-link facebook"
+              to="/"
+              target="_blank"
+              aria-label="Facebook"
+            >
+              <FontAwesomeIcon icon={faFacebook} />
+            </Link>
+            <Link
+              className="social-icon-link instagram"
+              to="/"
+              target="_blank"
+              aria-label="Instagram"
+            >
+              <FontAwesomeIcon icon={faInstagram} />
+            </Link>
+            <Link
+              className="social-icon-link youtube"
+              to="/"
+              target="_blank"
+              aria-label="Youtube"
+            >
+              <FontAwesomeIcon icon={faYoutube} />
+            </Link>
+            <Link
+              className="social-icon-link twitter"
+              to="/"
+              target="_blank"
+              aria-label="Twitter"
+            >
+              <FontAwesomeIcon icon={faTwitter} />
+            </Link>
+            <Link
+              className="social-icon-link twitter"
+              to="/"
+              target="_blank"
+              aria-label="LinkedIn"
+            ></Link>
+          </div>
         </div>
-    )
+      </section>
+    </div>
+  );
 }
 
-export default Fotter
+export default Fotter;
