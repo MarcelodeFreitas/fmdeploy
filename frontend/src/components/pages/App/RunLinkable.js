@@ -466,7 +466,7 @@ const Run = () => {
                 variant="contained"
                 color="primary"
                 onClick={() =>
-                  handleSubmit(token, inputFileID, true, flagDescription)
+                  handleSubmit(token, inputFileID, flagDescription)
                 }
               >
                 SUBMIT
